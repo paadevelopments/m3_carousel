@@ -31,7 +31,7 @@ M3Carousel(
     ],
 ),
 ```
-See [/lib/m3_carousel.dart](https://github.com/paadevelopments/m3_carousel/blob/main/lib/m3_carousel.dart) for all available parameters and adjust to 
+See [lib/m3_carousel.dart](https://github.com/paadevelopments/m3_carousel/blob/main/lib/m3_carousel.dart) for all available parameters and adjust to 
 suit your preference.
 
 ## Examples
