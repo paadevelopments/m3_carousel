@@ -1,39 +1,48 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# m3_carousel
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+![](/extras/sample.gif)
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Google's M3 standard carousel.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:m3_carousel/m3_carousel.dart';
+
+M3Carousel(
+    visible: 3, // number of visible slabs
+    borderRadius: 20,
+    slideAnimationDuration: 500, // milliseconds
+    titleFadeAnimationDuration: 300, // milliseconds
+    childClick: (int index) {
+        print("Clicked $index");
+    },
+    children: [
+        { "image": "assets/i1.png", "title": "Android" },
+        { "image": "assets/i2.png", "title": "IOS" },
+        { "image": "assets/i3.png", "title": "Windows" },
+        { "image": "assets/i4.png", "title": "Mac" },
+        { "image": "assets/i5.png", "title": "Linux" },
+        { "image": "assets/i6.png", "title": "Others" },
+    ],
+),
 ```
+See [/lib/m3_carousel.dart](/lib/m3_carousel.dart) for all available parameters and adjust to 
+suit your preference.
 
-## Additional information
+## Examples
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+See [example/lib/main.dart](example/lib/main.dart) for a complete example.
+
+## Foot Note
+
+This obviously still lacks some details in animation and flow according to M3's standard but 
+should give a foundational idea on how to go about with the expected specs.
+
+## License
+
+MIT license
