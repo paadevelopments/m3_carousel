@@ -2,7 +2,7 @@
 
 A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).
 
-![](/extras/sample.gif)
+![](https://github.com/paadevelopments/m3_carousel/blob/main/extras/sample.gif)
 
 ## Features
 
@@ -31,12 +31,12 @@ M3Carousel(
     ],
 ),
 ```
-See [/lib/m3_carousel.dart](/lib/m3_carousel.dart) for all available parameters and adjust to 
+See [/lib/m3_carousel.dart](https://github.com/paadevelopments/m3_carousel/blob/main/lib/m3_carousel.dart) for all available parameters and adjust to 
 suit your preference.
 
 ## Examples
 
-See [example/lib/main.dart](example/lib/main.dart) for a complete example.
+See [example/lib/main.dart](https://github.com/paadevelopments/m3_carousel/blob/main/example/lib/main.dart) for a complete example.
 
 ## Foot Note
 
