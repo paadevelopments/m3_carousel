@@ -2,7 +2,7 @@
 
 A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).
 
-![](https://github.com/paadevelopments/m3_carousel/blob/main/extras/sample.gif)
+![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/809b814b8e66a6f57e0a6fe5af4641237ef247d0/extras/sample.gif)
 
 ## Features
 
