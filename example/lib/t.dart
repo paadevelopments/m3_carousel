@@ -336,7 +336,7 @@ class _CarouselViewState extends State<CarouselView> {
                     itemExtent: _itemExtent!,
                     minExtent: widget.shrinkExtent,
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                         return Padding(
                           padding: effectivePadding,
                           child: widget.children.elementAt(index),
@@ -350,7 +350,7 @@ class _CarouselViewState extends State<CarouselView> {
                     shrinkExtent: widget.shrinkExtent,
                     weights: _weights!,
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                         return Padding(
                           padding: effectivePadding,
                           child: widget.children.elementAt(index),
@@ -820,8 +820,9 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
               'This feature was deprecated after v3.20.0-7.0.pre.'
       )
       double itemExtent,
-      ) {
-    return math.max(_firstVisibleItemIndex, 0);
+  ) {
+    int a = math.max(_firstVisibleItemIndex.isNaN || _firstVisibleItemIndex.isInfinite ? 0 : _firstVisibleItemIndex, 0);
+    return a.isNaN || a.isInfinite ? 0 : a;
   }
 
   @override

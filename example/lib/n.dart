@@ -8,9 +8,17 @@ import "package:flutter/material.dart";
 class M3Carousel extends StatefulWidget {
 
   const M3Carousel({
-    super.key, this.width, this.height, this.type = "hero", this.isExtended = false, this.freeScroll = false,
-    this.heroAlignment = "center", this.uncontainedItemExtent = 150, this.uncontainedShrinkExtent = 50,
-    this.childElementBorderRadius = 20, this.onTap, required this.children,
+    super.key,
+    this.width,
+    this.height,
+    this.type = "hero",
+    this.isExtended = false,
+    this.freeScroll = false,
+    this.heroAlignment = "center",
+    this.uncontainedItemExtent = 270,
+    this.uncontainedShrinkExtent = 150,
+    this.childElementBorderRadius = 20,
+    this.onTap, required this.children,
   });
 
   final double? width;
@@ -30,8 +38,10 @@ class M3Carousel extends StatefulWidget {
 }
 class _M3CarouselState extends State<M3Carousel> {
 
-  double frameWidth = 0.0, frameHeight = 0.0;
-  bool initiated = false, isDragging = false, doInitialHeroCenterScroll = false;
+  double frameWidth = 0.0;
+  double frameHeight = 0.0;
+  bool initiated = false;
+  bool isDragging = false;
   CarouselController controller = CarouselController();
   List<int> layoutWeight = [];
   int itemScrolled = 0;
@@ -40,12 +50,18 @@ class _M3CarouselState extends State<M3Carousel> {
     double prevScrollPosition = controller.position.pixels, nextScrollPosition = 0.0;
     if (widget.type == "hero") {
       double shouldAddOrSubtract = (((layoutWeight.reduce(widget.heroAlignment == "left" ? max : min) * 10) / 100) * frameWidth);
+      int limit = 0;
+      switch(widget.heroAlignment) {
+        case "center":  limit = direction == 0 ? 0 : 3; break;
+        case "left":    limit = direction == 0 ? 0 : 2; break;
+        case "right":   limit = direction == 0 ? 0 : 2; break;
+      }
       if (direction == 0) {
-        if (itemScrolled <= (widget.heroAlignment == "left" ? 0 : 1)) return;
+        if (itemScrolled <= limit) return;
         nextScrollPosition = prevScrollPosition - shouldAddOrSubtract;
         itemScrolled -= 1;
       } else {
-        if (itemScrolled >= (widget.children.length - (widget.heroAlignment == "right" ? 1 : 2))) return;
+        if (itemScrolled >= (widget.children.length - limit)) return;
         nextScrollPosition = prevScrollPosition + shouldAddOrSubtract;
         itemScrolled += 1;
       }
@@ -98,66 +114,62 @@ class _M3CarouselState extends State<M3Carousel> {
     switch(widget.type) {
       case "hero":
         switch(widget.heroAlignment) {
-          case "left":    layoutWeight = [8,2];   break;
-          case "center":  layoutWeight = [2,6,2]; doInitialHeroCenterScroll = true; break;
-          default:        layoutWeight = [2,8];   doInitialHeroCenterScroll = true; break;
+          case "left":    layoutWeight = [8,2];   controller = CarouselController(initialItem: 0); break;
+          case "center":  layoutWeight = [2,6,2]; controller = CarouselController(initialItem: 1); break;
+          default:        layoutWeight = [2,8];   controller = CarouselController(initialItem: 1); break;
         }
+        break;
       case "contained":
         layoutWeight = widget.isExtended ? [4,3,2,1] : [5,4,1];
         break;
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() { initiated = true; }));
     super.initState();
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero,() {
-      if (!doInitialHeroCenterScroll) return;
-      doInitialHeroCenterScroll = false;
-      scrollFrame(1);
-    });
     return LayoutBuilder(builder: (_c,_d) {
       frameWidth = widget.width ?? _d.maxWidth;
       frameHeight = widget.height ?? _d.maxHeight;
-      return Stack(children: [
-        setGestureLayer(SizedBox(
-          width: frameWidth,
-          height: frameHeight,
-          child: widget.type == "uncontained"
-          ? CarouselView(
-            controller: controller,
-            physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics(),
-            itemExtent: widget.uncontainedItemExtent,
-            shrinkExtent: widget.uncontainedShrinkExtent,
-            children: widget.children.asMap().entries.map((listItem) => ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
-              child: Stack(children: [
-                listItem.value,
-                widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
-              ],),
-            )).toList(),
-          )
-          : CarouselView.weighted(
-            controller: controller,
-            layoutWeights: layoutWeight,
-            physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics(),
-            itemSnapping: widget.freeScroll,
-            children: widget.children.asMap().entries.map((listItem) => ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
-              child: Stack(children: [
-                listItem.value,
-                widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
-              ],),
-            )).toList(),
-          ),
-        )),
-        Container(
-          width: initiated ? 0 : frameWidth,
-          height: frameHeight,
-          decoration: const BoxDecoration(color: Colors.white),
+      return setGestureLayer(SizedBox(
+        width: frameWidth,
+        height: frameHeight,
+        child: widget.type == "uncontained"
+        ? CarouselView(
+          key: UniqueKey(),
+          controller: controller,
+          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics(),
+          itemExtent: widget.uncontainedItemExtent,
+          shrinkExtent: widget.uncontainedShrinkExtent,
+          children: widget.children.asMap().entries.map((listItem) => ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
+            child: Stack(children: [
+              listItem.value,
+              widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
+            ],),
+          )).toList(),
         )
-      ],);
+        : CarouselView.weighted(
+          key: UniqueKey(),
+          controller: controller,
+          layoutWeights: layoutWeight,
+          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const CarouselScrollPhysics()),
+          itemSnapping: widget.freeScroll,
+          children: widget.children.asMap().entries.map((listItem) => ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
+            child: Stack(children: [
+              listItem.value,
+              widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
+            ],),
+          )).toList(),
+        ),
+      ));
     });
   }
 }

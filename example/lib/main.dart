@@ -21,57 +21,46 @@ class MyApp extends StatelessWidget {
     ];
     return Scaffold(
       appBar: AppBar(title: const Text("Material Design 3 Carousel"),),
-      body: SingleChildScrollView(child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 4),
-        child: Column(children: [
-          Column(children: [
-            const LabelWidget(text: "Hero layout",),
-            SizedBox(
-              width: double.maxFinite, height: 150,
-              child: M3Carousel(
-                type: "hero",
-                onTap: (int tapIndex) => log(tapIndex.toString()),
-                children: images.asMap().entries.map(
-                  (listItem) => ImageElement(listValue: listItem.value,)
-                ).toList(),
-              ),
-            ),
-          ],),
-          const SizedBox(height: 20,),
-          Column(children: [
-            const LabelWidget(text: "Contained layout",),
-            SizedBox(
-              width: double.maxFinite, height: 150,
-              child: M3Carousel(
-                type: "contained",
-                onTap: (int tapIndex) => log(tapIndex.toString()),
-                children: List<Widget>.generate(10, (int index) {
-                  return ColoredBox(
-                    color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.8),
-                    child: const SizedBox.expand(),
-                  );
-                }),
-              ),
-            ),
-          ],),
-          const SizedBox(height: 20,),
-          Column(children: [
-            const LabelWidget(text: "Uncontained layout",),
-            SizedBox(
-              width: double.maxFinite, height: 150,
-              child: M3Carousel(
-                type: "uncontained",
-                freeScroll: false,
-                onTap: (int tapIndex) => log(tapIndex.toString()),
-                children: List<Widget>.generate(10, (int index){
-                  return ContainedLayoutCard(index: index, label: "Show $index");
-                }),
-              ),
-            ),
-          ],),
-          const SizedBox(height: 20,),
+      body: SingleChildScrollView(child: Column(children: [
+        Column(children: [
+          const LabelWidget(text: "Hero layout",),
+          LayoutWidget(child: M3Carousel(
+            type: "hero",
+            heroAlignment: "center",
+            onTap: (int tapIndex) => log(tapIndex.toString()),
+            children: images.asMap().entries.map((listItem) => ImageElement(
+              listValue: listItem.value,
+            )).toList(),
+          ),),
         ],),
-      ),)
+        const SizedBox(height: 20,),
+        Column(children: [
+          const LabelWidget(text: "Contained layout",),
+          LayoutWidget(child: M3Carousel(
+            type: "contained",
+            onTap: (int tapIndex) => log(tapIndex.toString()),
+            children: List<Widget>.generate(10, (int index) {
+              return ColoredBox(
+                color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.8),
+                child: const SizedBox.expand(),
+              );
+            }),
+          )),
+        ],),
+        const SizedBox(height: 20,),
+        Column(children: [
+          const LabelWidget(text: "Uncontained layout",),
+          LayoutWidget(isExpanded: true, child: M3Carousel(
+            type: "uncontained",
+            freeScroll: false,
+            onTap: (int tapIndex) => log(tapIndex.toString()),
+            children: List<Widget>.generate(10, (int index){
+              return ContainedLayoutCard(index: index, label: "Show $index");
+            }),
+          )),
+        ],),
+        const SizedBox(height: 20,),
+      ],),)
     );
   }
 }
@@ -82,11 +71,27 @@ class LabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(top: 8.0, start: 8.0),
+      padding: const EdgeInsetsDirectional.only(top: 8.0, start: 12.0, end: 4.0),
       child: Align(alignment: Alignment.centerLeft,child: Text(
         text,
         style: const TextStyle(fontSize: 15),
       ),),
+    );
+  }
+}
+
+class LayoutWidget extends StatelessWidget {
+  final bool isExpanded;
+  final Widget child;
+  const LayoutWidget({super.key, this.isExpanded = false, required this.child});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: isExpanded ? EdgeInsets.zero : const EdgeInsets.symmetric(vertical: 0,horizontal: 4),
+      child: SizedBox(
+        width: double.maxFinite, height: 150,
+        child: child,
+      ),
     );
   }
 }
@@ -106,11 +111,11 @@ class ImageElement extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [ Colors.transparent, Colors.black.withOpacity(0.5) ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            )
+              gradient: LinearGradient(
+                colors: [ Colors.transparent, Colors.black.withOpacity(0.5) ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )
           ),
           child: Align(
             alignment: Alignment.bottomCenter,
