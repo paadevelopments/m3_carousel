@@ -1,48 +1,45 @@
 # M3_Carousel
+A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).  
+Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb5cdafa1efa1600d48b9e0a41dc4af1/packages/flutter/lib/src/material/carousel.dart).
 
-A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).
+## Feature Highlights
+- Hero carousel with support for "left", "center" and "right" alignments.  
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/hero.gif)
 
-![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/809b814b8e66a6f57e0a6fe5af4641237ef247d0/extras/sample.gif)
+- Contained carousel. Extended view inclusive.  
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/contained.gif)
 
-## Features
+- Uncontained carousel.  
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/uncontained.gif)
 
-Google's M3 standard carousel.
+## Installing
+In your pubspec.yaml
+```yaml
+dependencies:
+  m3_carousel: ^2.0.0 # requires Dart => ^3.0.5
+```
 
 ## Usage
-
 ```dart
-import 'package:m3_carousel/m3_carousel.dart';
+import "package:m3_carousel/m3_carousel.dart";
 
 M3Carousel(
-    visible: 3, // number of visible slabs
-    borderRadius: 20,
-    slideAnimationDuration: 500, // milliseconds
-    titleFadeAnimationDuration: 300, // milliseconds
-    childClick: (int index) {
-        print("Clicked $index");
-    },
-    children: [
-        { "image": "assets/i1.png", "title": "Android" },
-        { "image": "assets/i2.png", "title": "IOS" },
-        { "image": "assets/i3.png", "title": "Windows" },
-        { "image": "assets/i4.png", "title": "Mac" },
-        { "image": "assets/i5.png", "title": "Linux" },
-        { "image": "assets/i6.png", "title": "Others" },
-    ],
+    type: "hero",
+    heroAlignment: "center",
+    onTap: (int tapIndex) => log(tapIndex.toString()),
+    children: List<Widget>.generate(10, (int index) {
+        return ColoredBox(
+            color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.8),
+            child: const SizedBox.expand(),
+        );
+    }),
 ),
 ```
-See [lib/m3_carousel.dart](https://github.com/paadevelopments/m3_carousel/blob/main/lib/m3_carousel.dart) for all available parameters and adjust to 
-suit your preference.
+See [example/lib/main.dart](https://github.com/paadevelopments/m3_carousel/blob/main/example/lib/main.dart)
+for complete examples.
 
-## Examples
-
-See [example/lib/main.dart](https://github.com/paadevelopments/m3_carousel/blob/main/example/lib/main.dart) for a complete example.
-
-## Foot Note
-
-This obviously still lacks some details in animation and flow according to M3's standard but 
-should give a foundational idea on how to go about with the expected specs.
+## Reference
+Use of `CarouselView` is govern by the [`Flutter Authors LICENSE`](https://github.com/flutter/flutter/blob/7e87f1f5bb5cdafa1efa1600d48b9e0a41dc4af1/LICENSE)
 
 ## License
-
 MIT license
