@@ -14,3 +14,7 @@
 
 * Added support for hero, contained and uncontained carousels.
 * Optimized carousel animations.
+
+## 2.0.1
+
+* Updated listing constraints

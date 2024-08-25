@@ -3,7 +3,7 @@ library m3_carousel;
 import "dart:math";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:m3_carousel/base_layout.dart";
+import "package:m3_carousel/base_layout.dart" as m3bl;
 
 class M3Carousel extends StatefulWidget {
 
@@ -141,7 +141,7 @@ class _M3CarouselState extends State<M3Carousel> {
   bool initiated = false;
   List<int> layoutWeight = [];
   int itemScrolled = 0;
-  late CarouselController controller;
+  late m3bl.CarouselController controller;
 
   void scrollFrame(int direction) {
     double prevScrollPosition = controller.position.pixels, nextScrollPosition = 0.0;
@@ -211,13 +211,13 @@ class _M3CarouselState extends State<M3Carousel> {
 
   @override
   void initState() {
-    controller = CarouselController();
+    controller = m3bl.CarouselController();
     switch(widget.type) {
       case "hero":
         switch(widget.heroAlignment) {
-          case "left":    layoutWeight = [8,2];   controller = CarouselController(initialItem: 0); break;
-          case "center":  layoutWeight = [2,6,2]; controller = CarouselController(initialItem: 1); break;
-          default:        layoutWeight = [2,8];   controller = CarouselController(initialItem: 1); break;
+          case "left":    layoutWeight = [8,2];   controller = m3bl.CarouselController(initialItem: 0); break;
+          case "center":  layoutWeight = [2,6,2]; controller = m3bl.CarouselController(initialItem: 1); break;
+          default:        layoutWeight = [2,8];   controller = m3bl.CarouselController(initialItem: 1); break;
         }
         break;
       case "contained":
@@ -243,10 +243,10 @@ class _M3CarouselState extends State<M3Carousel> {
         width: frameWidth,
         height: frameHeight,
         child: widget.type == "uncontained"
-        ? CarouselView(
+        ? m3bl.CarouselView(
           key: UniqueKey(),
           controller: controller,
-          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const CarouselScrollPhysics()),
+          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const m3bl.CarouselScrollPhysics()),
           itemExtent: widget.uncontainedItemExtent,
           shrinkExtent: widget.uncontainedShrinkExtent,
           children: widget.children.asMap().entries.map((listItem) => ClipRRect(
@@ -257,11 +257,11 @@ class _M3CarouselState extends State<M3Carousel> {
             ],),
           )).toList(),
         )
-        : CarouselView.weighted(
+        : m3bl.CarouselView.weighted(
           key: UniqueKey(),
           controller: controller,
           layoutWeights: layoutWeight,
-          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const CarouselScrollPhysics()),
+          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const m3bl.CarouselScrollPhysics()),
           itemSnapping: widget.freeScroll,
           children: widget.children.asMap().entries.map((listItem) => ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
