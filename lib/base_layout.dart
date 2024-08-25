@@ -66,6 +66,7 @@ import 'package:flutter/rendering.dart';
 /// view.
 ///  * [PageView], which is a scrollable list that works page by page.
 class CarouselView extends StatefulWidget {
+
   /// Creates a Material Design carousel.
   const CarouselView({
     super.key,
@@ -820,7 +821,7 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
               'This feature was deprecated after v3.20.0-7.0.pre.'
       )
       double itemExtent,
-  ) {
+      ) {
     int a = math.max(_firstVisibleItemIndex.isNaN || _firstVisibleItemIndex.isInfinite ? 0 : _firstVisibleItemIndex, 0);
     return a.isNaN || a.isInfinite ? 0 : a;
   }

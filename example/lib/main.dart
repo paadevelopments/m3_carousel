@@ -1,6 +1,6 @@
 import "dart:developer";
-import "package:example/n.dart";
 import "package:flutter/material.dart";
+import "package:m3_carousel/m3_carousel.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
