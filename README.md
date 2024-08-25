@@ -1,4 +1,4 @@
-# m3_carousel
+# M3_Carousel
 
 A flutter implementation of the [Material Design 3 carousel](https://m3.material.io/components/carousel/overview).
 
