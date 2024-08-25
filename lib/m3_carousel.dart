@@ -6,7 +6,6 @@ import "package:flutter/material.dart";
 import "package:m3_carousel/base_layout.dart" as m3bl;
 
 class M3Carousel extends StatefulWidget {
-
   /// Creates a Material Design carousel from the underlying [CarouselView].
   ///
   /// Material Design 3 introduces 4 carousel layouts:
@@ -134,8 +133,8 @@ class M3Carousel extends StatefulWidget {
   @override
   State<M3Carousel> createState() => _M3CarouselState();
 }
-class _M3CarouselState extends State<M3Carousel> {
 
+class _M3CarouselState extends State<M3Carousel> {
   double frameWidth = 0.0;
   double frameHeight = 0.0;
   bool initiated = false;
@@ -144,16 +143,25 @@ class _M3CarouselState extends State<M3Carousel> {
   late m3bl.CarouselController controller;
 
   void scrollFrame(int direction) {
-    double prevScrollPosition = controller.position.pixels, nextScrollPosition = 0.0;
+    double prevScrollPosition = controller.position.pixels,
+        nextScrollPosition = 0.0;
     if (widget.type == "hero") {
-      double shouldAddOrSubtract = (((
-        layoutWeight.reduce(widget.heroAlignment == "left" ? max : min) * 10
-      ) / 100) * frameWidth);
+      double shouldAddOrSubtract =
+          (((layoutWeight.reduce(widget.heroAlignment == "left" ? max : min) *
+                      10) /
+                  100) *
+              frameWidth);
       int limit = 0;
-      switch(widget.heroAlignment) {
-        case "center":  limit = direction == 0 ? 0 : 3; break;
-        case "left":    limit = direction == 0 ? 0 : 2; break;
-        case "right":   limit = direction == 0 ? 0 : 2; break;
+      switch (widget.heroAlignment) {
+        case "center":
+          limit = direction == 0 ? 0 : 3;
+          break;
+        case "left":
+          limit = direction == 0 ? 0 : 2;
+          break;
+        case "right":
+          limit = direction == 0 ? 0 : 2;
+          break;
       }
       if (direction == 0) {
         if (itemScrolled <= limit) return;
@@ -164,20 +172,20 @@ class _M3CarouselState extends State<M3Carousel> {
         nextScrollPosition = prevScrollPosition + shouldAddOrSubtract;
         itemScrolled += 1;
       }
-    } else
-    if (widget.type == "contained") {
-      double shouldAddOrSubtract = (((layoutWeight.reduce(max) * 10) / 100) * frameWidth);
+    } else if (widget.type == "contained") {
+      double shouldAddOrSubtract =
+          (((layoutWeight.reduce(max) * 10) / 100) * frameWidth);
       if (direction == 0) {
         if (itemScrolled <= 0) return;
         nextScrollPosition = prevScrollPosition - shouldAddOrSubtract;
         itemScrolled -= 1;
       } else {
-        if (itemScrolled >= (widget.children.length - (widget.isExtended ? 4 : 3))) return;
+        if (itemScrolled >=
+            (widget.children.length - (widget.isExtended ? 4 : 3))) return;
         nextScrollPosition = prevScrollPosition + shouldAddOrSubtract;
         itemScrolled += 1;
       }
-    }
-    else {
+    } else {
       if (direction == 0) {
         if (itemScrolled <= 0) return;
         nextScrollPosition = prevScrollPosition - widget.uncontainedItemExtent;
@@ -188,40 +196,48 @@ class _M3CarouselState extends State<M3Carousel> {
         itemScrolled += 1;
       }
     }
-    controller.animateTo(
-      nextScrollPosition,
-      duration: Duration(milliseconds: widget.scrollAnimationDuration), curve: Curves.ease
-    );
+    controller.animateTo(nextScrollPosition,
+        duration: Duration(milliseconds: widget.scrollAnimationDuration),
+        curve: Curves.ease);
   }
 
   void onHorizontalDragEnd(DragEndDetails details) {
     if (details.primaryVelocity! > (kIsWeb ? 0 : 300)) {
       scrollFrame(0);
-    } else
-    if (details.primaryVelocity! < -(kIsWeb ? 0 : 300)) {
+    } else if (details.primaryVelocity! < -(kIsWeb ? 0 : 300)) {
       scrollFrame(1);
     }
   }
 
   Widget setGestureLayer(Widget child) => widget.freeScroll
-  ? child : GestureDetector(
-    onHorizontalDragEnd: onHorizontalDragEnd,
-    child: child,
-  );
+      ? child
+      : GestureDetector(
+          onHorizontalDragEnd: onHorizontalDragEnd,
+          child: child,
+        );
 
   @override
   void initState() {
     controller = m3bl.CarouselController();
-    switch(widget.type) {
+    switch (widget.type) {
       case "hero":
-        switch(widget.heroAlignment) {
-          case "left":    layoutWeight = [8,2];   controller = m3bl.CarouselController(initialItem: 0); break;
-          case "center":  layoutWeight = [2,6,2]; controller = m3bl.CarouselController(initialItem: 1); break;
-          default:        layoutWeight = [2,8];   controller = m3bl.CarouselController(initialItem: 1); break;
+        switch (widget.heroAlignment) {
+          case "left":
+            layoutWeight = [8, 2];
+            controller = m3bl.CarouselController(initialItem: 0);
+            break;
+          case "center":
+            layoutWeight = [2, 6, 2];
+            controller = m3bl.CarouselController(initialItem: 1);
+            break;
+          default:
+            layoutWeight = [2, 8];
+            controller = m3bl.CarouselController(initialItem: 1);
+            break;
         }
         break;
       case "contained":
-        layoutWeight = widget.isExtended ? [4,3,2,1] : [5,4,1];
+        layoutWeight = widget.isExtended ? [4, 3, 2, 1] : [5, 4, 1];
         break;
     }
     super.initState();
@@ -236,41 +252,75 @@ class _M3CarouselState extends State<M3Carousel> {
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
-    return LayoutBuilder(builder: (_c,_d) {
+    return LayoutBuilder(builder: (_c, _d) {
       frameWidth = widget.width ?? _d.maxWidth;
       frameHeight = widget.height ?? _d.maxHeight;
       return setGestureLayer(SizedBox(
         width: frameWidth,
         height: frameHeight,
         child: widget.type == "uncontained"
-        ? m3bl.CarouselView(
-          key: UniqueKey(),
-          controller: controller,
-          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const m3bl.CarouselScrollPhysics()),
-          itemExtent: widget.uncontainedItemExtent,
-          shrinkExtent: widget.uncontainedShrinkExtent,
-          children: widget.children.asMap().entries.map((listItem) => ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
-            child: Stack(children: [
-              listItem.value,
-              widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
-            ],),
-          )).toList(),
-        )
-        : m3bl.CarouselView.weighted(
-          key: UniqueKey(),
-          controller: controller,
-          layoutWeights: layoutWeight,
-          physics: widget.freeScroll ? null : const NeverScrollableScrollPhysics().applyTo(const m3bl.CarouselScrollPhysics()),
-          itemSnapping: widget.freeScroll,
-          children: widget.children.asMap().entries.map((listItem) => ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(widget.childElementBorderRadius)),
-            child: Stack(children: [
-              listItem.value,
-              widget.onTap == null ? const SizedBox(width: 0,height: 0,) : InkWell(onTap: () => widget.onTap!(listItem.key),),
-            ],),
-          )).toList(),
-        ),
+            ? m3bl.CarouselView(
+                key: UniqueKey(),
+                controller: controller,
+                physics: widget.freeScroll
+                    ? null
+                    : const NeverScrollableScrollPhysics()
+                        .applyTo(const m3bl.CarouselScrollPhysics()),
+                itemExtent: widget.uncontainedItemExtent,
+                shrinkExtent: widget.uncontainedShrinkExtent,
+                children: widget.children
+                    .asMap()
+                    .entries
+                    .map((listItem) => ClipRRect(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(widget.childElementBorderRadius)),
+                          child: Stack(
+                            children: [
+                              listItem.value,
+                              widget.onTap == null
+                                  ? const SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    )
+                                  : InkWell(
+                                      onTap: () => widget.onTap!(listItem.key),
+                                    ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              )
+            : m3bl.CarouselView.weighted(
+                key: UniqueKey(),
+                controller: controller,
+                layoutWeights: layoutWeight,
+                physics: widget.freeScroll
+                    ? null
+                    : const NeverScrollableScrollPhysics()
+                        .applyTo(const m3bl.CarouselScrollPhysics()),
+                itemSnapping: widget.freeScroll,
+                children: widget.children
+                    .asMap()
+                    .entries
+                    .map((listItem) => ClipRRect(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(widget.childElementBorderRadius)),
+                          child: Stack(
+                            children: [
+                              listItem.value,
+                              widget.onTap == null
+                                  ? const SizedBox(
+                                      width: 0,
+                                      height: 0,
+                                    )
+                                  : InkWell(
+                                      onTap: () => widget.onTap!(listItem.key),
+                                    ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ),
       ));
     });
   }
