@@ -5,21 +5,20 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:m3_carousel/base_layout.dart";
 
-/// A Material Design carousel wrapper widget.
-///
-/// Material Design 3 introduces 4 carousel layouts:
-///  * Multi-browse: This layout shows at least one large, medium, and small
-/// carousel item at a time.
-///  * Uncontained (default): This layout show items that scroll to the edge of
-/// the container.
-///  * Hero: This layout shows at least one large and one small item at a time.
-///  * Full-screen: This layout shows one edge-to-edge large item at a time and
-/// scrolls vertically.
-///
-/// For more info checkout the [Official Docs](https://m3.material.io/components/carousel).
 class M3Carousel extends StatefulWidget {
 
-  /// Creates a Material Design carousel from the underlying [CarouselView]
+  /// Creates a Material Design carousel from the underlying [CarouselView].
+  ///
+  /// Material Design 3 introduces 4 carousel layouts:
+  ///  * Multi-browse: This layout shows at least one large, medium, and small
+  /// carousel item at a time.
+  ///  * Uncontained (default): This layout show items that scroll to the edge of
+  /// the container.
+  ///  * Hero: This layout shows at least one large and one small item at a time.
+  ///  * Full-screen: This layout shows one edge-to-edge large item at a time and
+  /// scrolls vertically.
+  ///
+  /// For more info checkout the [Official Docs](https://m3.material.io/components/carousel).
   const M3Carousel({
     super.key,
     this.width,
