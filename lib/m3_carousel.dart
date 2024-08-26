@@ -295,8 +295,17 @@ class _M3CarouselState extends State<M3Carousel> {
                                       width: 0,
                                       height: 0,
                                     )
-                                  : InkWell(
-                                      onTap: () => widget.onTap!(listItem.key),
+                                  : Material(
+                                      color: Colors.transparent,
+                                      clipBehavior: Clip.hardEdge,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              widget.childElementBorderRadius)),
+                                      child: InkWell(
+                                        splashFactory: InkSparkle.splashFactory,
+                                        onTap: () =>
+                                            widget.onTap!(listItem.key),
+                                      ),
                                     ),
                             ],
                           ),
@@ -326,8 +335,16 @@ class _M3CarouselState extends State<M3Carousel> {
                                       width: 0,
                                       height: 0,
                                     )
-                                  : InkWell(
-                                      onTap: () => widget.onTap!(listItem.key),
+                                  : Material(
+                                      color: Colors.transparent,
+                                      clipBehavior: Clip.hardEdge,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              widget.childElementBorderRadius)),
+                                      child: InkWell(
+                                        onTap: () =>
+                                            widget.onTap!(listItem.key),
+                                      ),
                                     ),
                             ],
                           ),
