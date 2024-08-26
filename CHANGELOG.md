@@ -18,3 +18,8 @@
 ## 2.0.1
 
 * Updated listing constraints
+
+## 2.0.2
+
+* Added `singleSwipeGestureSensitivityRange`.
+* Fixed unequal outer padding for `uncontained` carousels.

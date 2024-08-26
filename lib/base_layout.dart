@@ -347,7 +347,9 @@ class _CarouselViewState extends State<CarouselView> {
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       return Padding(
-                        padding: effectivePadding,
+                        padding: index == (widget.children.length - 1)
+                            ? const EdgeInsets.symmetric(horizontal: 8.0)
+                            : const EdgeInsets.only(left: 8.0),
                         child: widget.children.elementAt(index),
                       );
                     },
@@ -754,7 +756,7 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
     return extent;
   }
 
-  // To ge the extent unit based on the viewport exten and the sum of weights.
+  // To ge the extent unit based on the viewport extent and the sum of weights.
   double get extentUnit =>
       constraints.viewportMainAxisExtent /
       (weights.reduce((int total, int extent) => total + extent));

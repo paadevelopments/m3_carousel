@@ -30,6 +30,7 @@ class M3Carousel extends StatefulWidget {
     this.uncontainedShrinkExtent = 150.0,
     this.childElementBorderRadius = 28.0,
     this.scrollAnimationDuration = 500,
+    this.singleSwipeGestureSensitivityRange = 300,
     this.onTap,
     required this.children,
   });
@@ -120,6 +121,16 @@ class M3Carousel extends StatefulWidget {
   /// Defaults to 500. Value unit is in milliseconds.
   final int scrollAnimationDuration;
 
+  /// Swipe scroll sensitivity for single-swipe gesture (automatic) scrolling.
+  ///
+  /// A higher value will imply a longer horizontal swipe to trigger scroll action
+  /// on carousel. Hence, reducing swipe sensitivity.
+  /// This works if [freeScroll] value is set to false (enables automatic scroll).
+  /// And on all platforms except Web.
+  ///
+  /// Defaults to 300.
+  final int singleSwipeGestureSensitivityRange;
+
   /// Sets listener for clicks/taps on carousel items.
   ///
   /// Clicked / Tapped item's index is return as [selectedIndex] value.
@@ -202,9 +213,11 @@ class _M3CarouselState extends State<M3Carousel> {
   }
 
   void onHorizontalDragEnd(DragEndDetails details) {
-    if (details.primaryVelocity! > (kIsWeb ? 0 : 300)) {
+    if (details.primaryVelocity! >
+        (kIsWeb ? 0 : widget.singleSwipeGestureSensitivityRange)) {
       scrollFrame(0);
-    } else if (details.primaryVelocity! < -(kIsWeb ? 0 : 300)) {
+    } else if (details.primaryVelocity! <
+        -(kIsWeb ? 0 : widget.singleSwipeGestureSensitivityRange)) {
       scrollFrame(1);
     }
   }
