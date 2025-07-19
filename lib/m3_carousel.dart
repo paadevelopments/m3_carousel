@@ -5,6 +5,18 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:m3_carousel/base_layout.dart" as m3bl;
 
+enum CarouselType {
+  hero,
+  contained,
+  uncontained;
+}
+
+enum HeroAlignment {
+  left,
+  center,
+  right;
+}
+
 class M3Carousel extends StatefulWidget {
   /// Creates a Material Design carousel from the underlying [CarouselView].
   ///
@@ -22,10 +34,10 @@ class M3Carousel extends StatefulWidget {
     super.key,
     this.width,
     this.height,
-    this.type = "hero",
+    this.type = CarouselType.hero,
     this.isExtended = false,
     this.freeScroll = false,
-    this.heroAlignment = "center",
+    this.heroAlignment = HeroAlignment.center,
     this.uncontainedItemExtent = 270.0,
     this.uncontainedShrinkExtent = 150.0,
     this.childElementBorderRadius = 28.0,
@@ -49,17 +61,17 @@ class M3Carousel extends StatefulWidget {
 
   /// The type of carousel.
   ///
-  /// Available values are "hero", "contained" and "uncontained".
+  /// Available values are [CarouselType.hero], [CarouselType.contained] and [CarouselType.uncontained].
   ///  * Hero carousel shows 2 - 3 visible items. 2 items if an associated [heroAlignment]
-  ///  value is set to either "left" or "right" and 3 if [heroAlignment] value is set to
-  ///  "center".
+  ///  value is set to either [HeroAlignment.left] or [HeroAlignment.right] and 3 if [heroAlignment] value is set to
+  ///  [HeroAlignment.center].
   ///  * Contained carousel shows 3 - 4 visible items. 3 items if an associated [isExtended]
   ///  is set to false and 4 if [isExtended] is set to true.
   ///  * Uncontained shows visible items depending on the associated [uncontainedItemExtent]
   ///  and [uncontainedShrinkExtent] values.
   ///
-  /// Defaults to "hero".
-  final String type;
+  /// Defaults to [CarouselType.hero].
+  final CarouselType type;
 
   /// Determines whether or not to display an extended carousel.
   ///
@@ -80,13 +92,13 @@ class M3Carousel extends StatefulWidget {
 
   /// Sets alignment for "hero" type carousel.
   ///
-  /// Pre-defined alignments are "left", "center" and "right".
-  /// "left" and "right" alignments comes with 2 visible items whiles "center" comes with
+  /// Pre-defined alignments are [HeroAlignment.left], [HeroAlignment.center] and [HeroAlignment.right].
+  /// [HeroAlignment.left] and [HeroAlignment.right] alignments comes with 2 visible items whiles [HeroAlignment.center] comes with
   ///  3 visible items.
   ///  This applies to "hero" type carousel ONLY.
   ///
-  /// Defaults to "center" alignment.
-  final String heroAlignment;
+  /// Defaults to [HeroAlignment.center] alignment.
+  final HeroAlignment heroAlignment;
 
   /// The extent the children are forced to have in the main axis.
   ///
@@ -156,21 +168,21 @@ class _M3CarouselState extends State<M3Carousel> {
   void scrollFrame(int direction) {
     double prevScrollPosition = controller.position.pixels,
         nextScrollPosition = 0.0;
-    if (widget.type == "hero") {
-      double shouldAddOrSubtract =
-          (((layoutWeight.reduce(widget.heroAlignment == "left" ? max : min) *
-                      10) /
-                  100) *
-              frameWidth);
+    if (widget.type == CarouselType.hero) {
+      double shouldAddOrSubtract = (((layoutWeight.reduce(
+                      widget.heroAlignment == HeroAlignment.left ? max : min) *
+                  10) /
+              100) *
+          frameWidth);
       int limit = 0;
       switch (widget.heroAlignment) {
-        case "center":
+        case HeroAlignment.center:
           limit = direction == 0 ? 0 : 3;
           break;
-        case "left":
+        case HeroAlignment.left:
           limit = direction == 0 ? 0 : 2;
           break;
-        case "right":
+        case HeroAlignment.right:
           limit = direction == 0 ? 0 : 2;
           break;
       }
@@ -183,7 +195,7 @@ class _M3CarouselState extends State<M3Carousel> {
         nextScrollPosition = prevScrollPosition + shouldAddOrSubtract;
         itemScrolled += 1;
       }
-    } else if (widget.type == "contained") {
+    } else if (widget.type == CarouselType.contained) {
       double shouldAddOrSubtract =
           (((layoutWeight.reduce(max) * 10) / 100) * frameWidth);
       if (direction == 0) {
@@ -233,24 +245,27 @@ class _M3CarouselState extends State<M3Carousel> {
   void initState() {
     controller = m3bl.CarouselController();
     switch (widget.type) {
-      case "hero":
+      case CarouselType.hero:
         switch (widget.heroAlignment) {
-          case "left":
+          case HeroAlignment.left:
             layoutWeight = [8, 2];
             controller = m3bl.CarouselController(initialItem: 0);
             break;
-          case "center":
+          case HeroAlignment.center:
             layoutWeight = [2, 6, 2];
             controller = m3bl.CarouselController(initialItem: 1);
             break;
-          default:
+          case HeroAlignment.right:
             layoutWeight = [2, 8];
             controller = m3bl.CarouselController(initialItem: 1);
             break;
         }
         break;
-      case "contained":
+      case CarouselType.contained:
         layoutWeight = widget.isExtended ? [4, 3, 2, 1] : [5, 4, 1];
+        break;
+      case CarouselType.uncontained:
+        // No layout weights needed for uncontained type
         break;
     }
     super.initState();
@@ -271,7 +286,7 @@ class _M3CarouselState extends State<M3Carousel> {
       return setGestureLayer(SizedBox(
         width: frameWidth,
         height: frameHeight,
-        child: widget.type == "uncontained"
+        child: widget.type == CarouselType.uncontained
             ? m3bl.CarouselView(
                 key: UniqueKey(),
                 controller: controller,
