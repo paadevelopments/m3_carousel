@@ -27,4 +27,5 @@
 
 ## 2.1.0
 
-* 
+* Updated to use enums
+* Resolved some lint issues

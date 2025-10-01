@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:math' as math;
+
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -243,6 +244,7 @@ class _CarouselViewState extends State<CarouselView> {
   double? _itemExtent;
   List<int>? _weights;
   CarouselController? _internalController;
+
   CarouselController get _controller =>
       widget.controller ?? _internalController!;
   late bool allowFullyExpand;
@@ -432,6 +434,7 @@ class _RenderSliverFixedExtentCarousel
 
   double get maxExtent => _maxExtent;
   double _maxExtent;
+
   set maxExtent(double value) {
     if (_maxExtent == value) {
       return;
@@ -442,6 +445,7 @@ class _RenderSliverFixedExtentCarousel
 
   double get minExtent => _minExtent;
   double _minExtent;
+
   set minExtent(double value) {
     if (_minExtent == value) {
       return;
@@ -676,6 +680,7 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
 
   bool get allowFullyExpand => _allowFullyExpand;
   bool _allowFullyExpand;
+
   set allowFullyExpand(bool value) {
     if (_allowFullyExpand == value) {
       return;
@@ -686,6 +691,7 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
 
   double get shrinkExtent => _shrinkExtent;
   double _shrinkExtent;
+
   set shrinkExtent(double value) {
     if (_shrinkExtent == value) {
       return;
@@ -696,6 +702,7 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
 
   List<int> get weights => _weights;
   List<int> _weights;
+
   set weights(List<int> value) {
     if (_weights == value) {
       return;
@@ -762,7 +769,9 @@ class _RenderSliverWeightedCarousel extends RenderSliverFixedExtentBoxAdaptor {
       (weights.reduce((int total, int extent) => total + extent));
 
   double get firstChildExtent => weights.first * extentUnit;
+
   double get maxChildExtent => weights.max * extentUnit;
+
   double get minChildExtent => weights.min * extentUnit;
 
   // The shrink extent for first and last visible items should be no larger
@@ -1268,6 +1277,7 @@ class _CarouselPosition extends ScrollPositionWithSingleContext
 
   final int initialItem;
   final double _itemToShowOnStartup;
+
   // When the viewport has a zero-size, the item can not
   // be retrieved by `getItemFromPixels`, so we need to cache the item
   // for use when resizing the viewport to non-zero next time.
@@ -1278,6 +1288,7 @@ class _CarouselPosition extends ScrollPositionWithSingleContext
 
   @override
   List<int>? layoutWeights;
+
   double getItemFromPixels(double pixels, double viewportDimension) {
     assert(viewportDimension > 0.0);
     double fraction;
