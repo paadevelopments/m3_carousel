@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
                   ),
                   LayoutWidget(
                     child: M3Carousel(
-                      type: "hero",
-                      heroAlignment: "center",
+                      type: CarouselType.hero,
+                      heroAlignment: HeroAlignment.center,
                       onTap: (int tapIndex) => log(tapIndex.toString()),
                       children: images
                           .asMap()
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
                   ),
                   LayoutWidget(
                       child: M3Carousel(
-                    type: "contained",
+                    type: CarouselType.contained,
                     onTap: (int tapIndex) => log(tapIndex.toString()),
                     children: List<Widget>.generate(10, (int index) {
                       return ColoredBox(
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
                   LayoutWidget(
                       isExpanded: true,
                       child: M3Carousel(
-                        type: "uncontained",
+                        type: CarouselType.uncontained,
                         freeScroll: false,
                         onTap: (int tapIndex) => log(tapIndex.toString()),
                         children: List<Widget>.generate(10, (int index) {
