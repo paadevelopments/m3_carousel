@@ -1,4 +1,5 @@
 import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:m3_carousel/m3_carousel.dart";
 
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
   });
+
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> images = [
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
                     children: List<Widget>.generate(10, (int index) {
                       return ColoredBox(
                         color: Colors.primaries[index % Colors.primaries.length]
-                            .withOpacity(0.8),
+                            .withValues(alpha: 0.8),
                         child: const SizedBox.expand(),
                       );
                     }),
@@ -103,7 +105,9 @@ class MyApp extends StatelessWidget {
 
 class LabelWidget extends StatelessWidget {
   final String text;
+
   const LabelWidget({super.key, required this.text});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -123,7 +127,9 @@ class LabelWidget extends StatelessWidget {
 class LayoutWidget extends StatelessWidget {
   final bool isExpanded;
   final Widget child;
+
   const LayoutWidget({super.key, this.isExpanded = false, required this.child});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -141,7 +147,9 @@ class LayoutWidget extends StatelessWidget {
 
 class ImageElement extends StatelessWidget {
   final Map listValue;
+
   const ImageElement({super.key, required this.listValue});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -157,7 +165,7 @@ class ImageElement extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           decoration: BoxDecoration(
               gradient: LinearGradient(
-            colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+            colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           )),
@@ -183,15 +191,18 @@ class ImageElement extends StatelessWidget {
 class ContainedLayoutCard extends StatelessWidget {
   final int index;
   final String label;
+
   const ContainedLayoutCard({
     super.key,
     required this.index,
     required this.label,
   });
+
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.5),
+      color: Colors.primaries[index % Colors.primaries.length]
+          .withValues(alpha: 0.5),
       child: Center(
         child: Text(
           label,

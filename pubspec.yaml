@@ -1,10 +1,10 @@
 name: m3_carousel
 description: A flutter implementation of the Material Design 3 carousel (https://m3.material.io/components/carousel/overview).
-version: 2.0.2
+version: 2.1.0
 homepage: https://github.com/paadevelopments/m3_carousel
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:

@@ -24,3 +24,8 @@
 * Added `singleSwipeGestureSensitivityRange`.
 * Fixed unequal outer padding for `uncontained` carousels.
 * Added the appropriate splash effect to carousel items.
+
+## 2.1.0
+
+* Updated to use enums
+* Resolved some lint issues

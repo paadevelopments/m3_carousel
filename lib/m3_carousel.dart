@@ -1,35 +1,53 @@
 library m3_carousel;
 
 import "dart:math";
+
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:m3_carousel/base_layout.dart" as m3bl;
 
+/// Defines the visual presentation and layout style of the carousel component.
 enum CarouselType {
+  /// A large, prominent, full-width carousel often used at the top of a page.
+  /// Slides typically have minimal surrounding padding and high visual impact.
   hero,
+
+  /// A standard carousel where slides are visually contained within the
+  /// application's main content area, respecting established boundaries and spacing.
   contained,
+
+  /// A carousel designed to extend beyond the main content area, where slides
+  /// may bleed into the edges of the container or screen (e.g., edge-to-edge design).
   uncontained;
 }
 
+/// Specifies the horizontal alignment of content (e.g., text, images, or controls)
+/// within a Hero-style carousel slide.
 enum HeroAlignment {
+  /// Content is aligned to the far left of the available space.
   left,
+
+  /// Content is centered horizontally within the slide.
   center,
+
+  /// Content is aligned to the far right of the available space.
   right;
 }
 
+/// Creates a Material Design carousel from the underlying [CarouselView].
+///
+/// Material Design 3 introduces 4 carousel layouts:
+///  * Multi-browse: This layout shows at least one large, medium, and small
+/// carousel item at a time.
+///  * Uncontained (default): This layout show items that scroll to the edge of
+/// the container.
+///  * Hero: This layout shows at least one large and one small item at a time.
+///  * Full-screen: This layout shows one edge-to-edge large item at a time and
+/// scrolls vertically.
+///
+/// For more info checkout the [Official Docs](https://m3.material.io/components/carousel).
 class M3Carousel extends StatefulWidget {
-  /// Creates a Material Design carousel from the underlying [CarouselView].
-  ///
-  /// Material Design 3 introduces 4 carousel layouts:
-  ///  * Multi-browse: This layout shows at least one large, medium, and small
-  /// carousel item at a time.
-  ///  * Uncontained (default): This layout show items that scroll to the edge of
-  /// the container.
-  ///  * Hero: This layout shows at least one large and one small item at a time.
-  ///  * Full-screen: This layout shows one edge-to-edge large item at a time and
-  /// scrolls vertically.
-  ///
-  /// For more info checkout the [Official Docs](https://m3.material.io/components/carousel).
+  /// Creates a Material Design carousel.
   const M3Carousel({
     super.key,
     this.width,
@@ -204,7 +222,9 @@ class _M3CarouselState extends State<M3Carousel> {
         itemScrolled -= 1;
       } else {
         if (itemScrolled >=
-            (widget.children.length - (widget.isExtended ? 4 : 3))) return;
+            (widget.children.length - (widget.isExtended ? 4 : 3))) {
+          return;
+        }
         nextScrollPosition = prevScrollPosition + shouldAddOrSubtract;
         itemScrolled += 1;
       }
@@ -279,10 +299,9 @@ class _M3CarouselState extends State<M3Carousel> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    return LayoutBuilder(builder: (_c, _d) {
-      frameWidth = widget.width ?? _d.maxWidth;
-      frameHeight = widget.height ?? _d.maxHeight;
+    return LayoutBuilder(builder: (ctx, dimens) {
+      frameWidth = widget.width ?? dimens.maxWidth;
+      frameHeight = widget.height ?? dimens.maxHeight;
       return setGestureLayer(SizedBox(
         width: frameWidth,
         height: frameHeight,

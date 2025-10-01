@@ -3,20 +3,20 @@ A flutter implementation of the [Material Design 3 carousel](https://m3.material
 Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb5cdafa1efa1600d48b9e0a41dc4af1/packages/flutter/lib/src/material/carousel.dart).
 
 ## Feature Highlights
-- Hero carousel with support for "left", "center" and "right" alignments.
+- Hero carousel with support for "left", "center" and "right" alignments.  
   ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/hero.gif)
 
-- Contained carousel. Extended view inclusive.
+- Contained carousel. Extended view inclusive.  
   ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/contained.gif)
 
-- Uncontained carousel.
+- Uncontained carousel.  
   ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/uncontained.gif)
 
 ## Installing
 In your pubspec.yaml
 ```yaml
 dependencies:
-  m3_carousel: ^2.0.2 # requires Dart => ^3.0.5
+  m3_carousel: ^2.1.0 # requires Dart => ^3.0.5
 ```
 
 ## Usage
