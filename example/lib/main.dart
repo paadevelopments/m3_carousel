@@ -111,8 +111,7 @@ class LabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsetsDirectional.only(top: 8.0, start: 12.0, end: 4.0),
+      padding: const EdgeInsets.only(top: 8.0, left: 12.0, bottom: 4.0),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(

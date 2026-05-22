@@ -29,3 +29,6 @@
 
 * Updated to use enums
 * Resolved some lint issues
+
+## 2.1.1
+* Updated Flutter version to 3.44.0 and migrated Viewport cache extent.

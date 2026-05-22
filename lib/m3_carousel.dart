@@ -315,6 +315,7 @@ class _M3CarouselState extends State<M3Carousel> {
                         .applyTo(const m3bl.CarouselScrollPhysics()),
                 itemExtent: widget.uncontainedItemExtent,
                 shrinkExtent: widget.uncontainedShrinkExtent,
+                itemSnapping: widget.freeScroll,
                 children: widget.children
                     .asMap()
                     .entries
@@ -349,7 +350,7 @@ class _M3CarouselState extends State<M3Carousel> {
             : m3bl.CarouselView.weighted(
                 key: UniqueKey(),
                 controller: controller,
-                layoutWeights: layoutWeight,
+                flexWeights: layoutWeight,
                 physics: widget.freeScroll
                     ? null
                     : const NeverScrollableScrollPhysics()
