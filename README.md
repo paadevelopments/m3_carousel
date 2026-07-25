@@ -18,7 +18,7 @@ Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb
 In your pubspec.yaml
 ```yaml
 dependencies:
-  m3_carousel: ^2.1.2 # requires Dart => ^3.12.0, Flutter >=3.38.0
+  m3_carousel: ^2.1.3 # requires Dart => ^3.12.0, Flutter >=3.38.0
 ```
 
 ## Usage

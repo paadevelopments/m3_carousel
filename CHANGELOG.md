@@ -40,3 +40,6 @@
 * Added `fixedPulseDelta` and centralized defaults via `CarouselTheme`.
 * Raised environment constraints to Dart `^3.12.0` and Flutter `>=3.38.0`.
 * Updated the example Android Gradle / AGP setup for AGP 9 compatibility.
+
+## 2.1.3
+* Refactored pulse animation to use a stable content layout and animated clipping window to prevent layout shifts.
