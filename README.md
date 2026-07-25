@@ -12,11 +12,13 @@ Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb
 - Uncontained carousel.  
   ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/uncontained.gif)
 
+- Horizontal or vertical scrolling via `axis`.
+
 ## Installing
 In your pubspec.yaml
 ```yaml
 dependencies:
-  m3_carousel: ^2.1.1 # requires Dart => ^3.0.5
+  m3_carousel: ^2.1.2 # requires Dart => ^3.12.0, Flutter >=3.38.0
 ```
 
 ## Usage
@@ -26,10 +28,12 @@ import "package:m3_carousel/m3_carousel.dart";
 M3Carousel(
     type: CarouselType.hero,
     heroAlignment: HeroAlignment.center,
+    axis: Axis.horizontal,
     onTap: (int tapIndex) => log(tapIndex.toString()),
     children: List<Widget>.generate(10, (int index) {
         return ColoredBox(
-            color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.8),
+            color: Colors.primaries[index % Colors.primaries.length]
+                .withValues(alpha: 0.8),
             child: const SizedBox.expand(),
         );
     }),

@@ -32,3 +32,11 @@
 
 ## 2.1.1
 * Updated Flutter version to 3.44.0 and migrated Viewport cache extent.
+
+## 2.1.2
+
+* Refactored the package into a modular `lib/src/` layout (carousel view, controller, theme, scroll physics, and weighted/fixed-extent slivers).
+* Added `axis` support for horizontal and vertical scrolling.
+* Added `fixedPulseDelta` and centralized defaults via `CarouselTheme`.
+* Raised environment constraints to Dart `^3.12.0` and Flutter `>=3.38.0`.
+* Updated the example Android Gradle / AGP setup for AGP 9 compatibility.
