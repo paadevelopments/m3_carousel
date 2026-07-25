@@ -9,9 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-  });
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,43 +22,35 @@ class MyApp extends StatelessWidget {
       {"image": "assets/i6.png", "title": "Others"},
     ];
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Material Design 3 Carousel"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  const LabelWidget(
-                    text: "Hero layout",
+      appBar: AppBar(title: const Text("Material Design 3 Carousel")),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Column(
+              children: [
+                const LabelWidget(text: "Hero layout"),
+                LayoutWidget(
+                  child: M3Carousel(
+                    type: CarouselType.hero,
+                    heroAlignment: HeroAlignment.center,
+                    onTap: (int tapIndex) => log(tapIndex.toString()),
+                    children: images
+                        .asMap()
+                        .entries
+                        .map(
+                          (listItem) => ImageElement(listValue: listItem.value),
+                        )
+                        .toList(),
                   ),
-                  LayoutWidget(
-                    child: M3Carousel(
-                      type: CarouselType.hero,
-                      heroAlignment: HeroAlignment.center,
-                      onTap: (int tapIndex) => log(tapIndex.toString()),
-                      children: images
-                          .asMap()
-                          .entries
-                          .map((listItem) => ImageElement(
-                                listValue: listItem.value,
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: [
-                  const LabelWidget(
-                    text: "Contained layout",
-                  ),
-                  LayoutWidget(
-                      child: M3Carousel(
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                const LabelWidget(text: "Contained layout"),
+                LayoutWidget(
+                  child: M3Carousel(
                     type: CarouselType.contained,
                     onTap: (int tapIndex) => log(tapIndex.toString()),
                     children: List<Widget>.generate(10, (int index) {
@@ -70,36 +60,35 @@ class MyApp extends StatelessWidget {
                         child: const SizedBox.expand(),
                       );
                     }),
-                  )),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: [
-                  const LabelWidget(
-                    text: "Uncontained layout",
                   ),
-                  LayoutWidget(
-                      isExpanded: true,
-                      child: M3Carousel(
-                        type: CarouselType.uncontained,
-                        freeScroll: false,
-                        onTap: (int tapIndex) => log(tapIndex.toString()),
-                        children: List<Widget>.generate(10, (int index) {
-                          return ContainedLayoutCard(
-                              index: index, label: "Show $index");
-                        }),
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ));
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                const LabelWidget(text: "Uncontained layout"),
+                LayoutWidget(
+                  isExpanded: true,
+                  child: M3Carousel(
+                    type: CarouselType.uncontained,
+                    freeScroll: false,
+                    onTap: (int tapIndex) => log(tapIndex.toString()),
+                    children: List<Widget>.generate(10, (int index) {
+                      return ContainedLayoutCard(
+                        index: index,
+                        label: "Show $index",
+                      );
+                    }),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -114,10 +103,7 @@ class LabelWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8.0, left: 12.0, bottom: 4.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 15),
-        ),
+        child: Text(text, style: const TextStyle(fontSize: 15)),
       ),
     );
   }
@@ -135,11 +121,7 @@ class LayoutWidget extends StatelessWidget {
       padding: isExpanded
           ? EdgeInsets.zero
           : const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      child: SizedBox(
-        width: double.maxFinite,
-        height: 150,
-        child: child,
-      ),
+      child: SizedBox(width: double.maxFinite, height: 150, child: child),
     );
   }
 }
@@ -163,11 +145,12 @@ class ImageElement extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-            colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          )),
+            gradient: LinearGradient(
+              colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Text(
@@ -200,8 +183,9 @@ class ContainedLayoutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.primaries[index % Colors.primaries.length]
-          .withValues(alpha: 0.5),
+      color: Colors.primaries[index % Colors.primaries.length].withValues(
+        alpha: 0.5,
+      ),
       child: Center(
         child: Text(
           label,
