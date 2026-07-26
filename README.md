@@ -4,13 +4,13 @@ Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb
 
 ## Feature Highlights
 - Hero carousel with support for "left", "center" and "right" alignments.  
-  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/hero.gif)
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/hero_v2.gif)
 
 - Contained carousel. Extended view inclusive.  
-  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/contained.gif)
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/contained_v2.gif)
 
 - Uncontained carousel.  
-  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/uncontained.gif)
+  ![](https://raw.githubusercontent.com/paadevelopments/m3_carousel/main/extras/uncontained_v2.gif)
 
 - Horizontal or vertical scrolling via `axis`.
 
@@ -18,7 +18,7 @@ Built on the [`CarouselView`](https://github.com/flutter/flutter/blob/7e87f1f5bb
 In your pubspec.yaml
 ```yaml
 dependencies:
-  m3_carousel: ^2.1.3 # requires Dart => ^3.12.0, Flutter >=3.38.0
+  m3_carousel: ^2.1.4 # requires Dart => ^3.12.0, Flutter >=3.38.0
 ```
 
 ## Usage

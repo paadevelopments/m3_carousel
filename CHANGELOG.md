@@ -43,3 +43,6 @@
 
 ## 2.1.3
 * Refactored pulse animation to use a stable content layout and animated clipping window to prevent layout shifts.
+
+## 2.1.4
+* Added package topics and updated documentation assets.
