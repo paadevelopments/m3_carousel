@@ -1,14 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_carousel/m3_carousel.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 void _enableItem() {}
 
-List<CarouselItem> _items(int count) {
-  return <CarouselItem>[
+List<M3CarouselItem> _items(int count) {
+  return <M3CarouselItem>[
     for (int i = 0; i < count; i++)
-      CarouselItem(
+      M3CarouselItem(
         onTap: _enableItem,
         image: ColoredBox(
           color: Colors.blue,
@@ -95,7 +94,7 @@ Future<void> _weightedViewWithConsumemaxweightFalseKeepsItem0After(
               child: SizedBox(
                 width: 400,
                 height: 200,
-                child: CarouselView.weighted(
+                child: M3CarouselView.weighted(
                   consumeMaxWeight: false,
                   flexWeights: const [2, 6, 2],
                   children: <Widget>[

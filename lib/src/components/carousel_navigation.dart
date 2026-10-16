@@ -11,10 +11,10 @@ extension _CarouselNavigation on _M3CarouselState {
       await _scrollVaried(direction, varied);
       return;
     }
-    final CarouselTheme theme = CarouselTheme.of(context);
+    final M3CarouselTheme theme = M3CarouselTheme.of(context);
     final bool weighted = layoutWeight.isNotEmpty;
-    final step = CarouselScrollHelper.nextStep(
-      type: weighted ? widget.type : CarouselType.uncontained,
+    final step = M3CarouselScrollHelper.nextStep(
+      type: weighted ? widget.type : M3CarouselType.uncontained,
       heroAlignment: widget.heroAlignment,
       isExtended: _extended(theme),
       uncontainedItemExtent: _stepExtent,
@@ -87,10 +87,10 @@ extension _CarouselNavigation on _M3CarouselState {
     if (varied != null && varied.isNotEmpty) {
       return index.clamp(0, varied.length - 1);
     }
-    final int limit = CarouselScrollHelper.maxIndex(
-      type: layoutWeight.isEmpty ? CarouselType.uncontained : widget.type,
+    final int limit = M3CarouselScrollHelper.maxIndex(
+      type: layoutWeight.isEmpty ? M3CarouselType.uncontained : widget.type,
       heroAlignment: widget.heroAlignment,
-      isExtended: _extended(CarouselTheme.of(context)),
+      isExtended: _extended(M3CarouselTheme.of(context)),
       childrenLength: widget.children.length,
     );
     if (limit < 0) {
@@ -109,9 +109,9 @@ extension _CarouselNavigation on _M3CarouselState {
       }
       return offset;
     }
-    final CarouselTheme theme = CarouselTheme.of(context);
-    return CarouselScrollHelper.offsetForIndex(
-      type: layoutWeight.isEmpty ? CarouselType.uncontained : widget.type,
+    final M3CarouselTheme theme = M3CarouselTheme.of(context);
+    return M3CarouselScrollHelper.offsetForIndex(
+      type: layoutWeight.isEmpty ? M3CarouselType.uncontained : widget.type,
       heroAlignment: widget.heroAlignment,
       isExtended: _extended(theme),
       uncontainedItemExtent: _stepExtent,
@@ -123,7 +123,7 @@ extension _CarouselNavigation on _M3CarouselState {
     );
   }
 
-  void _bindController(CarouselController controller) {
+  void _bindController(M3CarouselController controller) {
     controller.attachActions(
       currentItem: () => itemScrolled,
       step: scrollFrame,
@@ -132,7 +132,7 @@ extension _CarouselNavigation on _M3CarouselState {
         if (!mounted) {
           return;
         }
-        _openList(CarouselTheme.of(context));
+        _openList(M3CarouselTheme.of(context));
       },
     );
   }

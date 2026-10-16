@@ -5,12 +5,12 @@ import 'package:motor/motor.dart';
 
 /// Spring parameters for the container transform.
 @immutable
-class CarouselSpring {
+class M3CarouselSpring {
   /// Creates spring parameters.
-  const CarouselSpring({required this.stiffness, required this.damping});
+  const M3CarouselSpring({required this.stiffness, required this.damping});
 
   /// Default expressive spatial spring with slight overshoot.
-  static const CarouselSpring expressiveSpatialDefault = CarouselSpring(
+  static const M3CarouselSpring expressiveSpatialDefault = M3CarouselSpring(
     stiffness: 380,
     damping: 0.8,
   );
@@ -25,15 +25,15 @@ class CarouselSpring {
 /// Default scrim opacity behind an open container transform.
 const double _defaultTransformScrimOpacity = 0.32;
 
-SpringMotion _cardSpringMotion(CarouselSpring spring) =>
+SpringMotion _cardSpringMotion(M3CarouselSpring spring) =>
     const MaterialSpringMotion.expressiveSpatialDefault().copyWith(
       stiffness: spring.stiffness,
       damping: spring.damping,
     );
 
 /// Handle for an in-flight card container transform.
-class CarouselContainerTransformHandle<T extends Object?> {
-  CarouselContainerTransformHandle._(this.future, this._close);
+class M3CarouselContainerTransformHandle<T extends Object?> {
+  M3CarouselContainerTransformHandle._(this.future, this._close);
 
   /// Completes when the transform finishes closing.
   final Future<T?> future;
@@ -45,11 +45,11 @@ class CarouselContainerTransformHandle<T extends Object?> {
 }
 
 /// Opens a container transform from a card's rect to a full-screen surface.
-class CarouselContainerTransform {
-  CarouselContainerTransform._();
+class M3CarouselContainerTransform {
+  M3CarouselContainerTransform._();
 
   /// Morphs from [origin] into a full-screen destination built by [builder].
-  static CarouselContainerTransformHandle<T> show<T extends Object?>({
+  static M3CarouselContainerTransformHandle<T> show<T extends Object?>({
     required BuildContext context,
     required Rect origin,
     required double originRadius,
@@ -60,7 +60,7 @@ class CarouselContainerTransform {
     double endRadius = 0,
     double contentFadeStart = 0.4,
     double contentVisibleAt = 0.55,
-    CarouselSpring motion = CarouselSpring.expressiveSpatialDefault,
+    M3CarouselSpring motion = M3CarouselSpring.expressiveSpatialDefault,
   }) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final Color schemeScrim =
@@ -88,16 +88,16 @@ class CarouselContainerTransform {
     );
 
     final Future<T?> future = Navigator.of(context).push<T>(route);
-    return CarouselContainerTransformHandle<T>._(future, ([T? result]) {
+    return M3CarouselContainerTransformHandle<T>._(future, ([T? result]) {
       requestClose?.call(result);
     });
   }
 }
 
 /// Provides [close] to a card container-transform destination.
-class CarouselContainerTransformScope extends InheritedWidget {
+class M3CarouselContainerTransformScope extends InheritedWidget {
   /// Creates a transform scope.
-  const CarouselContainerTransformScope({
+  const M3CarouselContainerTransformScope({
     required this.close,
     required super.child,
     super.key,
@@ -108,20 +108,24 @@ class CarouselContainerTransformScope extends InheritedWidget {
 
   /// Closes the nearest open container transform.
   static void closeOf(BuildContext context, [Object? result]) {
-    final CarouselContainerTransformScope? scope = context
-        .dependOnInheritedWidgetOfExactType<CarouselContainerTransformScope>();
-    assert(scope != null, 'No CarouselContainerTransformScope found.');
+    final M3CarouselContainerTransformScope? scope = context
+        .dependOnInheritedWidgetOfExactType<
+          M3CarouselContainerTransformScope
+        >();
+    assert(scope != null, 'No M3CarouselContainerTransformScope found.');
     scope!.close(result);
   }
 
   /// Returns the nearest scope, or null.
-  static CarouselContainerTransformScope? maybeOf(BuildContext context) {
+  static M3CarouselContainerTransformScope? maybeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<CarouselContainerTransformScope>();
+        .dependOnInheritedWidgetOfExactType<
+          M3CarouselContainerTransformScope
+        >();
   }
 
   @override
-  bool updateShouldNotify(CarouselContainerTransformScope oldWidget) =>
+  bool updateShouldNotify(M3CarouselContainerTransformScope oldWidget) =>
       close != oldWidget.close;
 }
 
@@ -148,7 +152,7 @@ class _CarouselContainerTransformPageRoute<T> extends PageRoute<T> {
   final double endRadius;
   final double contentFadeStart;
   final double contentVisibleAt;
-  final CarouselSpring motion;
+  final M3CarouselSpring motion;
   final WidgetBuilder builder;
   final void Function(void Function([T? result]) close) onCloseReady;
 
@@ -228,7 +232,7 @@ class _CarouselContainerTransformHost<T> extends StatefulWidget {
   final double endRadius;
   final double contentFadeStart;
   final double contentVisibleAt;
-  final CarouselSpring motion;
+  final M3CarouselSpring motion;
   final WidgetBuilder builder;
   final void Function(void Function([T? result]) close) onCloseReady;
 
@@ -326,7 +330,7 @@ class _CarouselContainerTransformHostState<T>
         }
         _requestClose(result is T ? result : null);
       },
-      child: CarouselContainerTransformScope(
+      child: M3CarouselContainerTransformScope(
         close: ([Object? result]) => _requestClose(result is T ? result : null),
         child: Stack(
           fit: StackFit.expand,

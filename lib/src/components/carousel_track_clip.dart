@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 
 /// Clips a carousel track on the scroll axis and leaves room for shadows or
 /// a focus ring.
-class CarouselTrackClipper extends CustomClipper<Rect> {
+class M3CarouselTrackClipper extends CustomClipper<Rect> {
   /// Creates a clipper for [axis].
-  const CarouselTrackClipper({
+  const M3CarouselTrackClipper({
     required this.axis,
     this.crossAxisBleed = 16,
     this.mainAxisBleed = 0,
@@ -39,7 +39,7 @@ class CarouselTrackClipper extends CustomClipper<Rect> {
   }
 
   @override
-  bool shouldReclip(covariant CarouselTrackClipper oldClipper) {
+  bool shouldReclip(covariant M3CarouselTrackClipper oldClipper) {
     return oldClipper.axis != axis ||
         oldClipper.crossAxisBleed != crossAxisBleed ||
         oldClipper.mainAxisBleed != mainAxisBleed;

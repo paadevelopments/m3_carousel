@@ -3,15 +3,15 @@ import 'dart:math';
 import '../enums/carousel_type.dart';
 
 /// Scroll-step helpers for carousel frame navigation.
-abstract final class CarouselScrollHelper {
-  const CarouselScrollHelper._();
+abstract final class M3CarouselScrollHelper {
+  const M3CarouselScrollHelper._();
 
   /// Computes the next scroll position and updated [itemScrolled] for one step.
   ///
   /// Returns `null` when the step is out of bounds.
   static ({double nextScrollPosition, int itemScrolled})? nextStep({
-    required CarouselType type,
-    required HeroAlignment heroAlignment,
+    required M3CarouselType type,
+    required M3HeroAlignment heroAlignment,
     required bool isExtended,
     required double uncontainedItemExtent,
     required double leadingGap,
@@ -23,7 +23,7 @@ abstract final class CarouselScrollHelper {
     required int direction,
   }) {
     return switch (type) {
-      CarouselType.hero => _heroStep(
+      M3CarouselType.hero => _heroStep(
         heroAlignment: heroAlignment,
         layoutWeight: layoutWeight,
         mainExtent: mainExtent,
@@ -32,7 +32,7 @@ abstract final class CarouselScrollHelper {
         prevScrollPosition: prevScrollPosition,
         direction: direction,
       ),
-      CarouselType.contained => _containedStep(
+      M3CarouselType.contained => _containedStep(
         isExtended: isExtended,
         layoutWeight: layoutWeight,
         mainExtent: mainExtent,
@@ -41,9 +41,9 @@ abstract final class CarouselScrollHelper {
         prevScrollPosition: prevScrollPosition,
         direction: direction,
       ),
-      CarouselType.uncontained ||
-      CarouselType.uncontainedMultiAspect ||
-      CarouselType.fullScreen => _uncontainedStep(
+      M3CarouselType.uncontained ||
+      M3CarouselType.uncontainedMultiAspect ||
+      M3CarouselType.fullScreen => _uncontainedStep(
         uncontainedItemExtent: uncontainedItemExtent,
         leadingGap: leadingGap,
         childrenLength: childrenLength,
@@ -54,7 +54,7 @@ abstract final class CarouselScrollHelper {
   }
 
   static ({double nextScrollPosition, int itemScrolled})? _heroStep({
-    required HeroAlignment heroAlignment,
+    required M3HeroAlignment heroAlignment,
     required List<int> layoutWeight,
     required double mainExtent,
     required int childrenLength,
@@ -66,13 +66,13 @@ abstract final class CarouselScrollHelper {
       layoutWeight: layoutWeight,
       mainExtent: mainExtent,
       weight: layoutWeight.reduce(
-        heroAlignment == HeroAlignment.left ? max : min,
+        heroAlignment == M3HeroAlignment.left ? max : min,
       ),
     );
     final int limit = switch (heroAlignment) {
-      HeroAlignment.center => direction == 0 ? 0 : 3,
-      HeroAlignment.left => direction == 0 ? 0 : 2,
-      HeroAlignment.right => direction == 0 ? 0 : 2,
+      M3HeroAlignment.center => direction == 0 ? 0 : 3,
+      M3HeroAlignment.left => direction == 0 ? 0 : 2,
+      M3HeroAlignment.right => direction == 0 ? 0 : 2,
     };
     return _boundedStep(
       direction: direction,
@@ -146,29 +146,29 @@ abstract final class CarouselScrollHelper {
 
   /// Largest step index for [type]. Negative when the track cannot step.
   static int maxIndex({
-    required CarouselType type,
-    required HeroAlignment heroAlignment,
+    required M3CarouselType type,
+    required M3HeroAlignment heroAlignment,
     required bool isExtended,
     required int childrenLength,
   }) {
     return switch (type) {
-      CarouselType.hero =>
+      M3CarouselType.hero =>
         childrenLength -
             switch (heroAlignment) {
-              HeroAlignment.center => 3,
-              HeroAlignment.left || HeroAlignment.right => 2,
+              M3HeroAlignment.center => 3,
+              M3HeroAlignment.left || M3HeroAlignment.right => 2,
             },
-      CarouselType.contained => childrenLength - (isExtended ? 4 : 3),
-      CarouselType.uncontained ||
-      CarouselType.uncontainedMultiAspect ||
-      CarouselType.fullScreen => childrenLength - 1,
+      M3CarouselType.contained => childrenLength - (isExtended ? 4 : 3),
+      M3CarouselType.uncontained ||
+      M3CarouselType.uncontainedMultiAspect ||
+      M3CarouselType.fullScreen => childrenLength - 1,
     };
   }
 
   /// Scroll offset that places [index] where a swipe would land it.
   static double offsetForIndex({
-    required CarouselType type,
-    required HeroAlignment heroAlignment,
+    required M3CarouselType type,
+    required M3HeroAlignment heroAlignment,
     required bool isExtended,
     required double uncontainedItemExtent,
     required double leadingGap,
@@ -188,25 +188,25 @@ abstract final class CarouselScrollHelper {
       return _uncontainedOffset(target, uncontainedItemExtent, leadingGap);
     }
     return switch (type) {
-      CarouselType.hero =>
+      M3CarouselType.hero =>
         target *
             _weightDelta(
               layoutWeight: layoutWeight,
               mainExtent: mainExtent,
               weight: layoutWeight.reduce(
-                heroAlignment == HeroAlignment.left ? max : min,
+                heroAlignment == M3HeroAlignment.left ? max : min,
               ),
             ),
-      CarouselType.contained =>
+      M3CarouselType.contained =>
         target *
             _weightDelta(
               layoutWeight: layoutWeight,
               mainExtent: mainExtent,
               weight: layoutWeight.isEmpty ? 0 : layoutWeight.first,
             ),
-      CarouselType.uncontained ||
-      CarouselType.uncontainedMultiAspect ||
-      CarouselType.fullScreen => _uncontainedOffset(
+      M3CarouselType.uncontained ||
+      M3CarouselType.uncontainedMultiAspect ||
+      M3CarouselType.fullScreen => _uncontainedOffset(
         target,
         uncontainedItemExtent,
         leadingGap,

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_carousel/m3_carousel.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import 'helpers/carousel_test_helpers.dart';
 
@@ -9,10 +8,10 @@ void main() {
   testWidgets('gradient scrim fades into the scheme scrim', _gradientScrim);
 }
 
-List<CarouselItem> _scrimItems(CarouselScrim scrim) {
-  return <CarouselItem>[
+List<M3CarouselItem> _scrimItems(M3CarouselScrim scrim) {
+  return <M3CarouselItem>[
     for (int i = 0; i < 4; i++)
-      CarouselItem(
+      M3CarouselItem(
         onTap: enableCarouselItem,
         showScrim: scrim,
         image: const ColoredBox(color: Color(0xFF112233)),
@@ -32,7 +31,7 @@ Iterable<Gradient> _scrimGradients(WidgetTester tester) {
 Future<void> _gradientScrim(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
-      M3Carousel(children: _scrimItems(const CarouselScrim.gradient())),
+      M3Carousel(children: _scrimItems(const M3CarouselScrim.gradient())),
     ),
   );
   await tester.pump();
@@ -49,7 +48,7 @@ Future<void> _gradientScrim(WidgetTester tester) async {
   expect(fade.colors.first, scrim.withValues(alpha: 0));
   expect(
     fade.colors.last,
-    scrim.withValues(alpha: CarouselScrim.defaultGradientEndOpacity),
+    scrim.withValues(alpha: M3CarouselScrim.defaultGradientEndOpacity),
   );
 
   const custom = RadialGradient(
@@ -59,7 +58,7 @@ Future<void> _gradientScrim(WidgetTester tester) async {
     hostCarousel(
       M3Carousel(
         children: _scrimItems(
-          const CarouselScrim.gradient(gradient: custom, opacity: 0.5),
+          const M3CarouselScrim.gradient(gradient: custom, opacity: 0.5),
         ),
       ),
     ),

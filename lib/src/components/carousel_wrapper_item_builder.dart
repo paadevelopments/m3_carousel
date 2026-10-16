@@ -1,14 +1,14 @@
 part of 'carousel_wrapper.dart';
 
 /// Builds the pulsed item widgets, focus rings, and the underlying
-/// [CarouselView] for [_CarouselWrapperState].
+/// [M3CarouselView] for [_CarouselWrapperState].
 extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
   List<Widget> _focusRings(double edgeDelta, ThemeData theme) {
     final BorderRadius radius = widget.shape is RoundedRectangleBorder
         ? ((widget.shape! as RoundedRectangleBorder).borderRadius
               as BorderRadius)
         : BorderRadius.zero;
-    final CarouselTheme carousel = CarouselTheme.of(context);
+    final M3CarouselTheme carousel = M3CarouselTheme.of(context);
     final rings = <Widget>[];
     for (var index = 0; index < widget.children.length; index++) {
       if (index >= _itemFocus.length || !_itemFocus[index].hasPrimaryFocus) {
@@ -35,7 +35,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
             child: SizedBox(
               width: frame.width,
               height: frame.height,
-              child: CarouselFocusRing(
+              child: M3CarouselFocusRing(
                 focused: true,
                 radius: radius,
                 width: carousel.focusThickness,
@@ -188,15 +188,15 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
 
   /// Theme, item, and derived display values for one carousel item.
   ({
-    CarouselTheme carousel,
+    M3CarouselTheme carousel,
     ColorScheme scheme,
-    CarouselItem item,
+    M3CarouselItem item,
     bool enabled,
     bool hovered,
     String semanticsLabel,
     Widget picture,
     Widget labels,
-    CarouselScrim? scrim,
+    M3CarouselScrim? scrim,
   })
   _itemRenderMetadata({
     required int index,
@@ -204,7 +204,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     required double restHeight,
     required ThemeData theme,
   }) {
-    final CarouselItem item = _itemAt(index);
+    final M3CarouselItem item = _itemAt(index);
     final bool enabled = item.enabled;
     final Set<WidgetState> states = index < _itemStates.length
         ? _itemStates[index].value
@@ -214,7 +214,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
         'List item, ${index + 1} of ${widget.children.length}';
     final spoken = item.semanticLabel;
     return (
-      carousel: CarouselTheme.of(context),
+      carousel: M3CarouselTheme.of(context),
       scheme: theme.colorScheme,
       item: item,
       enabled: enabled,
@@ -242,15 +242,15 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     required double pulseBudget,
     required ScrollPosition position,
     required ({
-      CarouselTheme carousel,
+      M3CarouselTheme carousel,
       ColorScheme scheme,
-      CarouselItem item,
+      M3CarouselItem item,
       bool enabled,
       bool hovered,
       String semanticsLabel,
       Widget picture,
       Widget labels,
-      CarouselScrim? scrim,
+      M3CarouselScrim? scrim,
     })
     metadata,
   }) {
@@ -316,15 +316,15 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     required double pulseBudget,
     required ScrollPosition position,
     required ({
-      CarouselTheme carousel,
+      M3CarouselTheme carousel,
       ColorScheme scheme,
-      CarouselItem item,
+      M3CarouselItem item,
       bool enabled,
       bool hovered,
       String semanticsLabel,
       Widget picture,
       Widget labels,
-      CarouselScrim? scrim,
+      M3CarouselScrim? scrim,
     })
     metadata,
   }) {
@@ -405,14 +405,14 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
   /// [Material], in paint order.
   List<Widget> _buildItemStackChildren({
     required int index,
-    required CarouselItem item,
+    required M3CarouselItem item,
     required bool enabled,
     required bool fullscreenParallax,
     required Widget picture,
     required Widget labels,
-    required CarouselScrim? scrim,
+    required M3CarouselScrim? scrim,
     required Color scrimColor,
-    required CarouselTheme carousel,
+    required M3CarouselTheme carousel,
     required double restWidth,
     required double restHeight,
     required double pulseBudget,
@@ -457,7 +457,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
   }
 
   /// Solid or gradient scrim between the picture and the text.
-  Widget _buildScrimLayer(CarouselScrim scrim, Color scrimColor) {
+  Widget _buildScrimLayer(M3CarouselScrim scrim, Color scrimColor) {
     if (!scrim.isGradient) {
       return ColoredBox(color: scrim.paintColor);
     }
@@ -477,7 +477,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     required ScrollPosition position,
     required Widget picture,
     required bool enabled,
-    required CarouselTheme carousel,
+    required M3CarouselTheme carousel,
   }) {
     return Positioned.fill(
       child: ListenableBuilder(
@@ -521,7 +521,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
   Widget _buildPinnedPictureLayer({
     required Widget picture,
     required bool enabled,
-    required CarouselTheme carousel,
+    required M3CarouselTheme carousel,
     required ({double width, double height, double left, double top}) content,
     required ({double left, double top, double width, double height}) frame,
   }) {
@@ -543,7 +543,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
 
   Widget _buildItemInkWellLayer({
     required int index,
-    required CarouselItem item,
+    required M3CarouselItem item,
     required bool enabled,
   }) {
     return Positioned.fill(
@@ -579,7 +579,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     // scroll view does not drag or fling on after the step.
     final ScrollPhysics? physics = widget.freeScroll
         ? null
-        : const CarouselStepPhysics();
+        : const M3CarouselStepPhysics();
     final List<double>? extents = widget.itemExtents;
     if (extents != null) {
       return _buildExtentsView(carouselChildren, physics, extents);
@@ -595,7 +595,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     ScrollPhysics? physics,
     List<double> extents,
   ) {
-    return CarouselView(
+    return M3CarouselView(
       physics: physics,
       padding: widget.padding,
       backgroundColor: widget.backgroundColor,
@@ -624,7 +624,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     List<Widget> carouselChildren,
     ScrollPhysics? physics,
   ) {
-    return CarouselView.weighted(
+    return M3CarouselView.weighted(
       physics: physics,
       padding: widget.padding,
       backgroundColor: widget.backgroundColor,
@@ -651,7 +651,7 @@ extension _CarouselWrapperItemBuilder on _CarouselWrapperState {
     List<Widget> carouselChildren,
     ScrollPhysics? physics,
   ) {
-    return CarouselView(
+    return M3CarouselView(
       physics: physics,
       padding: widget.padding,
       backgroundColor: widget.backgroundColor,

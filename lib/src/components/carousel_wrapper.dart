@@ -2,8 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import '../foundations/foundations.dart';
 import '../models/carousel_change_details.dart';
@@ -21,14 +20,14 @@ part 'carousel_wrapper_geometry.dart';
 part 'carousel_wrapper_tap.dart';
 part 'carousel_wrapper_item_builder.dart';
 
-/// Wraps [CarouselView] with tap handling and a neighbor pulse animation.
+/// Wraps [M3CarouselView] with tap handling and a neighbor pulse animation.
 ///
 /// Item content is laid out at the largest slot size (plus pulse budget) and
 /// clipped to the current item bounds. Scrolling and tap pulse only move that
 /// clip "window"; the content layer stays still underneath.
-class CarouselWrapper extends StatefulWidget {
+class M3CarouselWrapper extends StatefulWidget {
   /// Creates a carousel wrapper with optional pulse animation on tap.
-  const CarouselWrapper({
+  const M3CarouselWrapper({
     super.key,
     this.freeScroll = false,
     this.padding,
@@ -45,7 +44,7 @@ class CarouselWrapper extends StatefulWidget {
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.onTap,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.enableSplash = true,
     this.infinite = false,
     this.itemExtent,
@@ -108,8 +107,8 @@ class CarouselWrapper extends StatefulWidget {
   /// Full-screen pages stay one size and slide.
   final bool scaleItems;
 
-  /// Optional controller for the underlying [CarouselView].
-  final CarouselController? controller;
+  /// Optional controller for the underlying [M3CarouselView].
+  final M3CarouselController? controller;
 
   /// Scroll axis for the carousel.
   final Axis scrollDirection;
@@ -120,8 +119,8 @@ class CarouselWrapper extends StatefulWidget {
   /// Called when an item is tapped.
   final void Function(int)? onTap;
 
-  /// Haptic intensity on item tap. Defaults to [CarouselHapticFeedback.none].
-  final CarouselHapticFeedback haptic;
+  /// Haptic intensity on item tap. Defaults to [M3CarouselHapticFeedback.none].
+  final M3CarouselHapticFeedback haptic;
 
   /// Whether the wrapper ink layer reports splash feedback.
   final bool enableSplash;
@@ -136,7 +135,7 @@ class CarouselWrapper extends StatefulWidget {
   final List<int>? flexWeights;
 
   /// Items in the carousel.
-  final List<CarouselItem> children;
+  final List<M3CarouselItem> children;
 
   /// Empty space before the first item on uncontained tracks.
   final double leadingInset;
@@ -145,7 +144,7 @@ class CarouselWrapper extends StatefulWidget {
   final void Function(int)? onIndexChanged;
 
   /// Called when the leading or focal item index changes.
-  final ValueChanged<CarouselChangeDetails>? onChange;
+  final ValueChanged<M3CarouselChangeDetails>? onChange;
 
   /// Called when keyboard focus moves to an item.
   final ValueChanged<int>? onFocusedIndex;
@@ -165,15 +164,15 @@ class CarouselWrapper extends StatefulWidget {
   final double fixedPulseDelta;
 
   @override
-  State<CarouselWrapper> createState() => _CarouselWrapperState();
+  State<M3CarouselWrapper> createState() => _CarouselWrapperState();
 }
 
-class _CarouselWrapperState extends State<CarouselWrapper>
+class _CarouselWrapperState extends State<M3CarouselWrapper>
     with SingleTickerProviderStateMixin {
   int? _activeIndex;
   int? _leftVisibleNeighborIndex;
   int? _rightVisibleNeighborIndex;
-  late CarouselController _internalController;
+  late M3CarouselController _internalController;
   final List<FocusNode> _itemFocus = <FocusNode>[];
   final List<WidgetStatesController> _itemStates = <WidgetStatesController>[];
   final List<LayerLink> _itemLinks = <LayerLink>[];
@@ -202,12 +201,12 @@ class _CarouselWrapperState extends State<CarouselWrapper>
   @override
   void initState() {
     super.initState();
-    _internalController = widget.controller ?? CarouselController();
+    _internalController = widget.controller ?? M3CarouselController();
     _syncFocusNodes();
   }
 
   @override
-  void didUpdateWidget(CarouselWrapper oldWidget) {
+  void didUpdateWidget(M3CarouselWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.children.length != oldWidget.children.length) {
       _itemBoxes.removeWhere((int index, _) => index >= widget.children.length);
@@ -216,7 +215,7 @@ class _CarouselWrapperState extends State<CarouselWrapper>
       if (oldWidget.controller == null) {
         _internalController.dispose();
       }
-      _internalController = widget.controller ?? CarouselController();
+      _internalController = widget.controller ?? M3CarouselController();
     }
     _syncFocusNodes();
   }
@@ -267,13 +266,15 @@ class _CarouselWrapperState extends State<CarouselWrapper>
                   onRegister: (RenderBox box) => _viewportBox = box,
                   onUnregister: _unregisterViewportBox,
                   child: ClipRect(
-                    clipper: CarouselTrackClipper(axis: widget.scrollDirection),
+                    clipper: M3CarouselTrackClipper(
+                      axis: widget.scrollDirection,
+                    ),
                     child: _buildCarouselView(carouselChildren),
                   ),
                 ),
                 Positioned.fill(
                   child: ClipRect(
-                    clipper: CarouselTrackClipper(
+                    clipper: M3CarouselTrackClipper(
                       axis: widget.scrollDirection,
                       mainAxisBleed: _focusRingBleed,
                       crossAxisBleed: _focusRingBleed,

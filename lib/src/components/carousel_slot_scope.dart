@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 /// The visible main-axis size of one carousel slot.
-class CarouselSlotScope extends InheritedWidget {
-  /// CarouselSlotScope.
-  const CarouselSlotScope({
+class M3CarouselSlotScope extends InheritedWidget {
+  /// M3CarouselSlotScope.
+  const M3CarouselSlotScope({
     required this.slotMain,
     required super.child,
     super.key,
@@ -13,11 +13,11 @@ class CarouselSlotScope extends InheritedWidget {
   final double slotMain;
 
   /// Nearest slot scope, or null.
-  static CarouselSlotScope? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<CarouselSlotScope>();
+  static M3CarouselSlotScope? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<M3CarouselSlotScope>();
   }
 
   @override
-  bool updateShouldNotify(CarouselSlotScope oldWidget) =>
+  bool updateShouldNotify(M3CarouselSlotScope oldWidget) =>
       slotMain != oldWidget.slotMain;
 }

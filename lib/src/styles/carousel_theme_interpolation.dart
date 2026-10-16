@@ -1,7 +1,7 @@
 part of 'carousel_theme.dart';
 
-/// Field-group interpolation helpers used by [CarouselTheme.lerp].
-extension _CarouselThemeInterpolation on CarouselTheme {
+/// Field-group interpolation helpers used by [M3CarouselTheme.lerp].
+extension _CarouselThemeInterpolation on M3CarouselTheme {
   /// Interpolates the motion/interaction-facing fields of `lerp`.
   ({
     double uncontainedItemExtent,
@@ -20,7 +20,7 @@ extension _CarouselThemeInterpolation on CarouselTheme {
     double focusStateOpacity,
     double pressedStateOpacity,
   })
-  _lerpMotionValues(CarouselTheme other, double t) {
+  _lerpMotionValues(M3CarouselTheme other, double t) {
     return (
       uncontainedItemExtent: _lerpDouble(
         uncontainedItemExtent,
@@ -96,7 +96,7 @@ extension _CarouselThemeInterpolation on CarouselTheme {
     double maxAspect,
     double fullScreenRadius,
   })
-  _lerpSizingValues(CarouselTheme other, double t) {
+  _lerpSizingValues(M3CarouselTheme other, double t) {
     return (
       disabledOpacity: _lerpDouble(disabledOpacity, other.disabledOpacity, t)!,
       disabledOutlineOpacity: _lerpDouble(

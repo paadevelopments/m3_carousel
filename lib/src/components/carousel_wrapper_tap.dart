@@ -5,7 +5,7 @@ part of 'carousel_wrapper.dart';
 extension _CarouselWrapperTap on _CarouselWrapperState {
   Future<void> _handleTap(int index) async {
     if (widget.onTap != null) {
-      CarouselHaptics.trigger(widget.haptic);
+      M3CarouselHaptics.trigger(widget.haptic);
     }
     widget.onTap?.call(index);
     if (_pulseController.isAnimating) {
@@ -27,7 +27,7 @@ extension _CarouselWrapperTap on _CarouselWrapperState {
         _rightVisibleNeighborIndex = null;
       });
     }
-    final CarouselItem item = _itemAt(index);
+    final M3CarouselItem item = _itemAt(index);
     final Widget? destination = item.transform;
     if (destination != null && item.enabled && mounted) {
       _openItemTransform(index, destination);
@@ -51,7 +51,7 @@ extension _CarouselWrapperTap on _CarouselWrapperState {
     final radius = widget.shape is RoundedRectangleBorder
         ? (widget.shape! as RoundedRectangleBorder).borderRadius as BorderRadius
         : BorderRadius.zero;
-    CarouselContainerTransform.show<void>(
+    M3CarouselContainerTransform.show<void>(
       context: context,
       origin: origin,
       originRadius: radius.topLeft.x,

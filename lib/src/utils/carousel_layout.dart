@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 /// Turns a weight pattern into slot sizes that follow the carousel spec.
-abstract final class CarouselLayout {
-  const CarouselLayout._();
+abstract final class M3CarouselLayout {
+  const M3CarouselLayout._();
 
   /// Clamps small slots to [smallMin]–[smallMax] and large slots to [largeMax].
   ///

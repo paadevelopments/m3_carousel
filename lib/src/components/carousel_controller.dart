@@ -1,15 +1,15 @@
 part of 'carousel_view.dart';
 
-/// A controller for the carousel and [CarouselView].
+/// A controller for the carousel and [M3CarouselView].
 ///
 /// [next], [previous], [animateToItem], and [jumpToItem] move by the same
 /// step as a swipe. [showAll] opens the carousel list. [currentItem] is the
 /// item that step is aiming at.
-class CarouselController extends ScrollController {
+class M3CarouselController extends ScrollController {
   /// Creates a carousel controller.
-  CarouselController({this.initialItem = 0});
+  M3CarouselController({this.initialItem = 0});
 
-  /// The item that expands to the maximum size when first creating the [CarouselView].
+  /// The item that expands to the maximum size when first creating the [M3CarouselView].
   final int initialItem;
 
   int Function()? _readItem;
@@ -117,15 +117,15 @@ class CarouselController extends ScrollController {
   /// Space before the first multi-aspect item. Later items sit flush.
   double variedLeadingGap = 0;
 
-  /// The current leading item index in the [CarouselView].
+  /// The current leading item index in the [M3CarouselView].
   int get leadingItem {
     assert(
       positions.isNotEmpty,
-      'CarouselController.leadingItem cannot be accessed before a CarouselView is built with it.',
+      'M3CarouselController.leadingItem cannot be accessed before a M3CarouselView is built with it.',
     );
     assert(
       positions.length == 1,
-      'CarouselController.leadingItem cannot be read when multiple CarouselViews '
+      'M3CarouselController.leadingItem cannot be read when multiple CarouselViews '
       'are attached to the same controller.',
     );
     final List<double>? extents = variedItemExtents;

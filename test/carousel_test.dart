@@ -1,8 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_carousel/m3_carousel.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import 'helpers/carousel_test_helpers.dart';
 
@@ -40,7 +39,7 @@ Future<void> _hero(WidgetTester tester) async {
 }
 
 Future<void> _heroAlignments(WidgetTester tester) async {
-  for (final HeroAlignment alignment in HeroAlignment.values) {
+  for (final M3HeroAlignment alignment in M3HeroAlignment.values) {
     await tester.pumpWidget(
       hostCarousel(
         M3Carousel(heroAlignment: alignment, children: carouselItems(6)),
@@ -54,7 +53,7 @@ Future<void> _heroAlignments(WidgetTester tester) async {
 Future<void> _contained(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
-      M3Carousel(type: CarouselType.contained, children: carouselItems(6)),
+      M3Carousel(type: M3CarouselType.contained, children: carouselItems(6)),
     ),
   );
   await tester.pump();
@@ -65,7 +64,7 @@ Future<void> _contained(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.contained,
+        type: M3CarouselType.contained,
         isExtended: true,
         children: carouselItems(6),
       ),
@@ -79,7 +78,7 @@ Future<void> _uncontained(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(8),
       ),
@@ -98,9 +97,9 @@ Future<void> _textRestoresWhenScrollEnds(WidgetTester tester) async {
     CarouselSettleHost(
       width: 400,
       child: M3Carousel(
-        children: <CarouselItem>[
+        children: <M3CarouselItem>[
           for (int i = 0; i < 6; i++)
-            CarouselItem(
+            M3CarouselItem(
               onTap: enableCarouselItem,
               image: ColoredBox(
                 key: ValueKey<int>(i),
@@ -165,7 +164,7 @@ Future<void> _uncontainedSettle(WidgetTester tester) async {
       width: width,
       child: M3Carousel(
         key: const ValueKey<String>('settle'),
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         children: carouselItems(8),
       ),
     ),
@@ -190,7 +189,7 @@ Future<void> _uncontainedSettle(WidgetTester tester) async {
       .pixels;
   final double? leading = leadingMaterialWidth(tester);
   expect(narrowest, greaterThan(100), reason: 'settled pixels $pixels');
-  expect(pixels, closeTo(CarouselTheme.defaultUncontainedItemExtent, 1));
+  expect(pixels, closeTo(M3CarouselTheme.defaultUncontainedItemExtent, 1));
   expect(leading, greaterThan(200));
 }
 
@@ -198,16 +197,16 @@ Future<void> _multiAspectGap(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       const M3Carousel(
-        type: CarouselType.uncontainedMultiAspect,
-        children: <CarouselItem>[
-          CarouselItem(
+        type: M3CarouselType.uncontainedMultiAspect,
+        children: <M3CarouselItem>[
+          M3CarouselItem(
             onTap: enableCarouselItem,
             image: ColoredBox(
               key: ValueKey<String>('a'),
               color: Color(0xFF112233),
             ),
           ),
-          CarouselItem(
+          M3CarouselItem(
             onTap: enableCarouselItem,
             image: ColoredBox(
               key: ValueKey<String>('b'),
@@ -242,10 +241,10 @@ Future<void> _multiAspectShrinks(WidgetTester tester) async {
     CarouselSettleHost(
       width: 800,
       child: M3Carousel(
-        type: CarouselType.uncontainedMultiAspect,
-        children: <CarouselItem>[
+        type: M3CarouselType.uncontainedMultiAspect,
+        children: <M3CarouselItem>[
           for (int i = 0; i < 4; i++)
-            CarouselItem(
+            M3CarouselItem(
               onTap: enableCarouselItem,
               aspectRatio: i.isEven ? 16 / 9 : 9 / 16,
               image: ColoredBox(
@@ -300,7 +299,7 @@ Future<void> _expectUncontainedImageFillsAtWidth(
       width: width,
       child: M3Carousel(
         key: ValueKey<double>(width),
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         children: carouselItems(4),
       ),
     ),
@@ -351,12 +350,12 @@ Future<void> _uncontainedImageFills(WidgetTester tester) async {
 
 Future<void> _expectUncontainedTypeInset(
   WidgetTester tester,
-  CarouselType type,
+  M3CarouselType type,
 ) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        key: ValueKey<CarouselType>(type),
+        key: ValueKey<M3CarouselType>(type),
         type: type,
         uncontainedItemExtent: 150,
         children: carouselItems(6),
@@ -377,7 +376,7 @@ Future<void> _expectUncontainedTypeInset(
       carousel.right - rightEdge.clamp(carousel.left, carousel.right);
   expect(
     leftInset,
-    closeTo(CarouselTheme.defaultItemGap, 1),
+    closeTo(M3CarouselTheme.defaultItemGap, 1),
     reason: '$type left',
   );
   // Extent 150 in a 400-wide host leaves a peek below the shrink extent,
@@ -395,7 +394,7 @@ Future<void> _expectUncontainedWidthStable(
       width: width,
       child: M3Carousel(
         key: ValueKey<double>(width),
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         children: carouselItems(8),
       ),
     ),
@@ -408,9 +407,9 @@ Future<void> _expectUncontainedWidthStable(
 }
 
 Future<void> _uncontainedInsets(WidgetTester tester) async {
-  for (final type in <CarouselType>[
-    CarouselType.uncontained,
-    CarouselType.uncontainedMultiAspect,
+  for (final type in <M3CarouselType>[
+    M3CarouselType.uncontained,
+    M3CarouselType.uncontainedMultiAspect,
   ]) {
     await _expectUncontainedTypeInset(tester, type);
   }
@@ -447,7 +446,7 @@ Future<void> _expectStableEdge(WidgetTester tester, String reason) async {
 
 Future<void> _expectHeroContainedInset(
   WidgetTester tester,
-  CarouselType type,
+  M3CarouselType type,
   double width,
 ) async {
   await tester.pumpWidget(
@@ -474,9 +473,9 @@ Future<void> _heroContainedInsets(WidgetTester tester) async {
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
-  for (final type in <CarouselType>[
-    CarouselType.hero,
-    CarouselType.contained,
+  for (final type in <M3CarouselType>[
+    M3CarouselType.hero,
+    M3CarouselType.contained,
   ]) {
     for (final width in <double>[360, 743, 1107]) {
       await _expectHeroContainedInset(tester, type, width);
@@ -547,11 +546,11 @@ Future<void> _fullScreenFills(WidgetTester tester) async {
 }
 
 Future<void> _vertical(WidgetTester tester) async {
-  for (final CarouselType type in CarouselType.values) {
+  for (final M3CarouselType type in M3CarouselType.values) {
     await tester.pumpWidget(
       hostCarousel(
         M3Carousel(
-          key: ValueKey<CarouselType>(type),
+          key: ValueKey<M3CarouselType>(type),
           axis: Axis.vertical,
           type: type,
           uncontainedItemExtent: 80,
@@ -568,7 +567,7 @@ Future<void> _vertical(WidgetTester tester) async {
     hostCarousel(
       M3Carousel(
         axis: Axis.vertical,
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 80,
         children: carouselItems(6),
       ),
@@ -614,7 +613,7 @@ Future<void> _smallSlotClamp(WidgetTester tester) async {
             width: 800,
             height: 200,
             child: M3Carousel(
-              type: CarouselType.contained,
+              type: M3CarouselType.contained,
               children: carouselItems(6),
             ),
           ),

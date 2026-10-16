@@ -1,8 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_carousel/m3_carousel.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import 'helpers/carousel_test_helpers.dart';
 
@@ -35,14 +34,14 @@ void main() {
 }
 
 Future<void> _controllerSteps(WidgetTester tester) async {
-  final controller = CarouselController();
+  final controller = M3CarouselController();
   addTearDown(controller.dispose);
   await tester.pumpWidget(
     CarouselSettleHost(
       width: 800,
       child: M3Carousel(
         controller: controller,
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         children: carouselItems(6),
       ),
     ),
@@ -50,7 +49,7 @@ Future<void> _controllerSteps(WidgetTester tester) async {
   await tester.pump();
   expect(controller.currentItem, 0);
 
-  const double extent = CarouselTheme.defaultUncontainedItemExtent;
+  const double extent = M3CarouselTheme.defaultUncontainedItemExtent;
   final Future<void> forward = controller.next();
   await tester.pumpAndSettle();
   await forward;
@@ -75,7 +74,7 @@ Future<void> _tap(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         onTap: (int index) {},
         children: carouselItems(6),
@@ -97,7 +96,7 @@ Future<void> _freeScroll(WidgetTester tester) async {
     hostCarousel(
       M3Carousel(
         freeScroll: true,
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(8),
       ),
@@ -114,7 +113,7 @@ Future<void> _tapPulseWithNeighbors(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(6),
       ),
@@ -135,7 +134,7 @@ Future<void> _retapAfterScroll(WidgetTester tester) async {
     hostCarousel(
       M3Carousel(
         freeScroll: true,
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(8),
       ),
@@ -158,7 +157,7 @@ Future<void> _edgeItemTapPulse(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(6),
       ),
@@ -192,7 +191,7 @@ Future<void> _heroTapPulsePixelBudget(WidgetTester tester) async {
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF6750A4),
         extensions: const <ThemeExtension<dynamic>>[
-          CarouselTheme(itemPadding: EdgeInsets.all(8)),
+          M3CarouselTheme(itemPadding: EdgeInsets.all(8)),
         ],
       ),
       home: Scaffold(
@@ -217,11 +216,11 @@ Future<void> _heroTapPulsePixelBudget(WidgetTester tester) async {
 }
 
 Future<void> _onChangeFocal(WidgetTester tester) async {
-  CarouselChangeDetails? latest;
+  M3CarouselChangeDetails? latest;
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        onChange: (CarouselChangeDetails details) {
+        onChange: (M3CarouselChangeDetails details) {
           latest = details;
         },
         children: carouselItems(6),
@@ -261,7 +260,7 @@ class _OnChangeHostState extends State<_OnChangeHost> {
   Widget build(BuildContext context) {
     return hostCarousel(
       M3Carousel(
-        onChange: (CarouselChangeDetails details) {
+        onChange: (M3CarouselChangeDetails details) {
           if (_focalIndex == details.focalIndex) {
             return;
           }
@@ -274,12 +273,12 @@ class _OnChangeHostState extends State<_OnChangeHost> {
 }
 
 Future<void> _onChangeMidpointSymmetric(WidgetTester tester) async {
-  CarouselChangeDetails? latest;
+  M3CarouselChangeDetails? latest;
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
         freeScroll: true,
-        onChange: (CarouselChangeDetails details) {
+        onChange: (M3CarouselChangeDetails details) {
           latest = details;
         },
         children: carouselItems(6),
@@ -295,12 +294,12 @@ Future<void> _onChangeMidpointSymmetric(WidgetTester tester) async {
       .state<ScrollableState>(find.byType(Scrollable))
       .position;
   final double viewport = position.viewportDimension;
-  final List<int> weights = CarouselLayout.clampWeights(
+  final List<int> weights = M3CarouselLayout.clampWeights(
     pattern: const <int>[2, 6, 2],
     viewport: viewport,
-    smallMin: CarouselTheme.defaultSmallMinWidth,
-    smallMax: CarouselTheme.defaultSmallMaxWidth,
-    largeMax: CarouselTheme.defaultLargeMaxWidth,
+    smallMin: M3CarouselTheme.defaultSmallMinWidth,
+    smallMax: M3CarouselTheme.defaultSmallMaxWidth,
+    largeMax: M3CarouselTheme.defaultLargeMaxWidth,
   );
   final int total = weights.fold<int>(0, (int a, int b) => a + b);
   final double mid = viewport * weights.first / total / 2;
@@ -331,7 +330,7 @@ Future<void> _snapDefaults(WidgetTester tester) async {
   await tester.pumpWidget(
     hostCarousel(
       M3Carousel(
-        type: CarouselType.uncontained,
+        type: M3CarouselType.uncontained,
         uncontainedItemExtent: 150,
         children: carouselItems(6),
       ),
@@ -356,7 +355,7 @@ Future<void> _snapDefaults(WidgetTester tester) async {
   await tester.pump();
   expect(
     tester.state<ScrollableState>(find.byType(Scrollable)).position.physics,
-    isA<CarouselScrollPhysics>(),
+    isA<M3CarouselScrollPhysics>(),
   );
 }
 
@@ -393,7 +392,7 @@ Future<void> _showAll(WidgetTester tester) async {
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 400));
 
-  expect(find.byType(CarouselShowAll), findsOneWidget);
+  expect(find.byType(M3CarouselShowAll), findsOneWidget);
 }
 
 Future<void> _itemTransform(WidgetTester tester) async {
@@ -404,16 +403,16 @@ Future<void> _itemTransform(WidgetTester tester) async {
           width: 400,
           height: 200,
           child: M3Carousel(
-            type: CarouselType.uncontained,
+            type: M3CarouselType.uncontained,
             uncontainedItemExtent: 160,
-            children: <CarouselItem>[
-              CarouselItem(
+            children: <M3CarouselItem>[
+              M3CarouselItem(
                 onTap: enableCarouselItem,
                 transform: Text('opened-item'),
                 image: SizedBox.expand(child: Text('item0')),
               ),
-              CarouselItem(onTap: enableCarouselItem, image: Text('item1')),
-              CarouselItem(onTap: enableCarouselItem, image: Text('item2')),
+              M3CarouselItem(onTap: enableCarouselItem, image: Text('item1')),
+              M3CarouselItem(onTap: enableCarouselItem, image: Text('item2')),
             ],
           ),
         ),
@@ -457,6 +456,6 @@ Future<void> _carouselTransform(WidgetTester tester) async {
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 400));
 
-  expect(find.byType(CarouselShowAll), findsOneWidget);
+  expect(find.byType(M3CarouselShowAll), findsOneWidget);
   expect(find.text('Trips'), findsWidgets);
 }

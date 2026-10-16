@@ -4,13 +4,13 @@ import 'package:flutter/widgets.dart';
 ///
 /// The scroll view does not drag. A programmatic step is not followed by a
 /// ballistic settle, so the item that just became leading is not snapped away.
-class CarouselStepPhysics extends NeverScrollableScrollPhysics {
+class M3CarouselStepPhysics extends NeverScrollableScrollPhysics {
   /// Creates physics that ignore user dragging and end-of-step flings.
-  const CarouselStepPhysics({super.parent});
+  const M3CarouselStepPhysics({super.parent});
 
   @override
-  CarouselStepPhysics applyTo(ScrollPhysics? ancestor) {
-    return const CarouselStepPhysics();
+  M3CarouselStepPhysics applyTo(ScrollPhysics? ancestor) {
+    return const M3CarouselStepPhysics();
   }
 
   @override

@@ -9,9 +9,9 @@ import '../models/carousel_scrim.dart';
 /// item's current size on every frame. Large slots show [title] and
 /// [subtitle]. Medium slots hide [title]. Small slots show [prefixText] on
 /// that same line.
-class CarouselItem {
+class M3CarouselItem {
   /// Creates a carousel item.
-  const CarouselItem({
+  const M3CarouselItem({
     required this.image,
     this.title,
     this.subtitle,
@@ -48,7 +48,7 @@ class CarouselItem {
   final Widget? transform;
 
   /// Scrim between [image] and the text.
-  final CarouselScrim? showScrim;
+  final M3CarouselScrim? showScrim;
 
   /// Width divided by height. Clamped by the carousel theme for multi-aspect.
   final double aspectRatio;

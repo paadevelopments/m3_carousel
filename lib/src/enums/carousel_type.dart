@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart' show Axis;
 import 'package:material_ui/material_ui.dart' show Axis;
 
 /// Defines the visual presentation and layout style of an `M3Carousel`.
-enum CarouselType {
+enum M3CarouselType {
   /// A large, prominent carousel that spotlights one big item with small
   /// peeking neighbours. Shows 2 - 3 visible items depending on
-  /// [HeroAlignment].
+  /// [M3HeroAlignment].
   hero,
 
   /// A standard carousel where items stay visually contained within the
@@ -30,11 +30,11 @@ enum CarouselType {
   fullScreen,
 }
 
-/// The alignment of the focal item in a [CarouselType.hero] carousel.
+/// The alignment of the focal item in a [M3CarouselType.hero] carousel.
 ///
 /// For [Axis.horizontal]: leading / center / trailing along the row.
 /// For [Axis.vertical]: [left] is top (start), [right] is bottom (end).
-enum HeroAlignment {
+enum M3HeroAlignment {
   /// Focal item at the leading edge (left when horizontal, top when vertical),
   /// with one small peek after.
   left,

@@ -1,8 +1,7 @@
 import "dart:developer";
 
 import "package:m3_carousel/m3_carousel.dart";
-import "package:material_ui/material_ui.dart"
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import "package:material_ui/material_ui.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,10 +22,10 @@ const List<Map<String, String>> images = [
   {"image": "assets/i6.png", "title": "Others"},
 ];
 
-List<CarouselItem> carouselItems({bool varyAspect = false}) {
-  return List<CarouselItem>.generate(images.length, (int index) {
+List<M3CarouselItem> carouselItems({bool varyAspect = false}) {
+  return List<M3CarouselItem>.generate(images.length, (int index) {
     final Map<String, String> image = images[index];
-    return CarouselItem(
+    return M3CarouselItem(
       semanticLabel: image["title"],
       image: Image.asset(image["image"]!, fit: BoxFit.cover),
       title: Text(
@@ -43,7 +42,7 @@ List<CarouselItem> carouselItems({bool varyAspect = false}) {
         style: const TextStyle(color: Colors.white),
       ),
       aspectRatio: varyAspect && index.isOdd ? 9 / 16 : 16 / 9,
-      showScrim: const CarouselScrim.gradient(),
+      showScrim: const M3CarouselScrim.gradient(),
       onTap: () => log(index.toString()),
     );
   });
@@ -62,8 +61,8 @@ class MyApp extends StatelessWidget {
             const LabelWidget(text: "Hero layout"),
             LayoutWidget(
               child: M3Carousel(
-                type: CarouselType.hero,
-                heroAlignment: HeroAlignment.center,
+                type: M3CarouselType.hero,
+                heroAlignment: M3HeroAlignment.center,
                 onTap: (int tapIndex) => log(tapIndex.toString()),
                 children: carouselItems(),
               ),
@@ -73,7 +72,7 @@ class MyApp extends StatelessWidget {
             LayoutWidget(
               height: 220,
               child: M3Carousel(
-                type: CarouselType.contained,
+                type: M3CarouselType.contained,
                 header: const Text("Platforms"),
                 onTap: (int tapIndex) => log(tapIndex.toString()),
                 children: carouselItems(),
@@ -84,7 +83,7 @@ class MyApp extends StatelessWidget {
             LayoutWidget(
               height: 220,
               child: M3Carousel(
-                type: CarouselType.uncontained,
+                type: M3CarouselType.uncontained,
                 showAll: true,
                 onTap: (int tapIndex) => log(tapIndex.toString()),
                 children: carouselItems(),
@@ -94,7 +93,7 @@ class MyApp extends StatelessWidget {
             const LabelWidget(text: "Uncontained multi-aspect layout"),
             LayoutWidget(
               child: M3Carousel(
-                type: CarouselType.uncontainedMultiAspect,
+                type: M3CarouselType.uncontainedMultiAspect,
                 onTap: (int tapIndex) => log(tapIndex.toString()),
                 children: carouselItems(varyAspect: true),
               ),
@@ -124,7 +123,7 @@ class FullScreenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Full-screen layout")),
       body: M3Carousel(
-        type: CarouselType.fullScreen,
+        type: M3CarouselType.fullScreen,
         onTap: (int tapIndex) => log(tapIndex.toString()),
         children: carouselItems(),
       ),

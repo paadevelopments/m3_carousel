@@ -1,5 +1,4 @@
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import '../enums/carousel_type.dart';
 
@@ -7,7 +6,7 @@ part 'carousel_theme_interpolation.dart';
 
 /// Theme values for `M3Carousel`.
 @immutable
-class CarouselTheme extends ThemeExtension<CarouselTheme> {
+class M3CarouselTheme extends ThemeExtension<M3CarouselTheme> {
   /// defaultUncontainedItemExtent.
   static const double defaultUncontainedItemExtent = 270;
 
@@ -89,9 +88,9 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   /// Full-screen corner radius.
   static const double defaultFullScreenRadius = 0;
 
-  /// CarouselTheme.
+  /// M3CarouselTheme.
 
-  const CarouselTheme({
+  const M3CarouselTheme({
     this.uncontainedItemExtent = defaultUncontainedItemExtent,
     this.uncontainedShrinkExtent = defaultUncontainedShrinkExtent,
     this.borderRadiusValue = defaultBorderRadiusValue,
@@ -127,11 +126,11 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
 
   /// defaults.
 
-  static const CarouselTheme defaults = CarouselTheme();
+  static const M3CarouselTheme defaults = M3CarouselTheme();
 
   /// The ambient carousel theme, or [defaults] when none is installed.
-  static CarouselTheme of(BuildContext context) =>
-      Theme.of(context).extension<CarouselTheme>() ?? defaults;
+  static M3CarouselTheme of(BuildContext context) =>
+      Theme.of(context).extension<M3CarouselTheme>() ?? defaults;
 
   /// uncontainedItemExtent.
 
@@ -226,8 +225,8 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   final double fullScreenRadius;
 
   /// Corner radius for [type].
-  double radiusFor(CarouselType type) {
-    if (type == CarouselType.fullScreen) {
+  double radiusFor(M3CarouselType type) {
+    if (type == M3CarouselType.fullScreen) {
       return fullScreenRadius;
     }
     return borderRadiusValue;
@@ -237,17 +236,17 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   ///
   /// Hero and contained keep 16 on the sides. Uncontained tracks touch the
   /// horizontal edges; the item gap is the leading space at rest.
-  EdgeInsets containerPaddingFor(CarouselType type) {
+  EdgeInsets containerPaddingFor(M3CarouselType type) {
     final double halfGap = itemGap / 2;
     const double vertical = 8;
     switch (type) {
-      case CarouselType.fullScreen:
+      case M3CarouselType.fullScreen:
         return EdgeInsets.zero;
-      case CarouselType.uncontained:
-      case CarouselType.uncontainedMultiAspect:
+      case M3CarouselType.uncontained:
+      case M3CarouselType.uncontainedMultiAspect:
         return const EdgeInsets.symmetric(vertical: vertical);
-      case CarouselType.hero:
-      case CarouselType.contained:
+      case M3CarouselType.hero:
+      case M3CarouselType.contained:
         return EdgeInsets.fromLTRB(
           16 - halfGap,
           vertical,
@@ -288,7 +287,7 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   }
 
   @override
-  CarouselTheme copyWith({
+  M3CarouselTheme copyWith({
     double? uncontainedItemExtent,
     double? uncontainedShrinkExtent,
     double? borderRadiusValue,
@@ -320,7 +319,7 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
     double? maxAspect,
     double? fullScreenRadius,
   }) {
-    return CarouselTheme(
+    return M3CarouselTheme(
       uncontainedItemExtent:
           uncontainedItemExtent ?? this.uncontainedItemExtent,
       uncontainedShrinkExtent:
@@ -361,13 +360,13 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   }
 
   @override
-  CarouselTheme lerp(CarouselTheme? other, double t) {
-    if (other is! CarouselTheme) {
+  M3CarouselTheme lerp(M3CarouselTheme? other, double t) {
+    if (other is! M3CarouselTheme) {
       return this;
     }
     final motion = _lerpMotionValues(other, t);
     final sizing = _lerpSizingValues(other, t);
-    return CarouselTheme(
+    return M3CarouselTheme(
       uncontainedItemExtent: motion.uncontainedItemExtent,
       uncontainedShrinkExtent: motion.uncontainedShrinkExtent,
       borderRadiusValue: motion.borderRadiusValue,

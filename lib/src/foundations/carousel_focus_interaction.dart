@@ -7,8 +7,8 @@ import 'package:flutter/widgets.dart';
 /// Any pointer interaction (hover, press, scroll, or pan) clears rings. Only
 /// keyboard focus-navigation keys enable them again. Focus on nodes is
 /// unchanged — only ring visibility is gated.
-class CarouselFocusInteraction extends ChangeNotifier {
-  CarouselFocusInteraction._() {
+class M3CarouselFocusInteraction extends ChangeNotifier {
+  M3CarouselFocusInteraction._() {
     FocusManager.instance.addHighlightModeListener(_onHighlightModeChanged);
     HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     _bindPointerRoute();
@@ -16,7 +16,8 @@ class CarouselFocusInteraction extends ChangeNotifier {
   }
 
   /// Shared process-wide interaction modality for focus rings.
-  static final CarouselFocusInteraction instance = CarouselFocusInteraction._();
+  static final M3CarouselFocusInteraction instance =
+      M3CarouselFocusInteraction._();
 
   bool _ringsAllowed = false;
   bool _notifyPointerScheduled = false;

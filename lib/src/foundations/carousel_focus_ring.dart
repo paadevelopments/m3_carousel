@@ -11,9 +11,9 @@ import 'carousel_focus_ring_theme.dart';
 ///
 /// Always uses a stable [Stack] so toggling [focused] does not remount
 /// [child] (important for [EditableText] text-input clients).
-class CarouselFocusRing extends StatelessWidget {
+class M3CarouselFocusRing extends StatelessWidget {
   /// Creates a focus ring decorator.
-  const CarouselFocusRing({
+  const M3CarouselFocusRing({
     required this.radius,
     required this.child,
     this.focused = false,
@@ -36,7 +36,7 @@ class CarouselFocusRing extends StatelessWidget {
   /// Optional animation for ring appearance.
   final Duration animationDuration;
 
-  /// Optional color override; defaults to [CarouselFocusRingTheme.resolveColor].
+  /// Optional color override; defaults to [M3CarouselFocusRingTheme.resolveColor].
   final Color? color;
 
   /// Optional stroke width override.
@@ -47,12 +47,12 @@ class CarouselFocusRing extends StatelessWidget {
 
   /// Theme outset (`gap + width`) for layout clearance.
   static double outsetOf(BuildContext context) {
-    return CarouselFocusRingTheme.of(context).outset;
+    return M3CarouselFocusRingTheme.of(context).outset;
   }
 
   /// Theme tokens for the ambient [Theme].
-  static CarouselFocusRingTheme themeOf(BuildContext context) {
-    return CarouselFocusRingTheme.of(context);
+  static M3CarouselFocusRingTheme themeOf(BuildContext context) {
+    return M3CarouselFocusRingTheme.of(context);
   }
 
   /// Whether the ambient theme allows keyboard focus ring / state chrome.
@@ -65,7 +65,7 @@ class CarouselFocusRing extends StatelessWidget {
     if (!node.hasPrimaryFocus) {
       return false;
     }
-    if (!CarouselFocusInteraction.instance.ringsAllowed) {
+    if (!M3CarouselFocusInteraction.instance.ringsAllowed) {
       return false;
     }
     return FocusManager.instance.highlightMode ==
@@ -79,14 +79,15 @@ class CarouselFocusRing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: CarouselFocusInteraction.instance,
+      listenable: M3CarouselFocusInteraction.instance,
       builder: (BuildContext context, Widget? _) => _paint(context),
     );
   }
 
   Widget _paint(BuildContext context) {
-    final ringTheme = CarouselFocusRingTheme.of(context);
-    final bool show = focused && CarouselFocusInteraction.instance.ringsAllowed;
+    final ringTheme = M3CarouselFocusRingTheme.of(context);
+    final bool show =
+        focused && M3CarouselFocusInteraction.instance.ringsAllowed;
     final resolvedColor =
         color ?? ringTheme.resolveColor(Theme.of(context).colorScheme);
     final resolvedGap = gap ?? ringTheme.gap;

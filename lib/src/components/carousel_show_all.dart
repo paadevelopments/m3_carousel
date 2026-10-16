@@ -1,5 +1,4 @@
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import '../foundations/foundations.dart';
 import 'carousel_item.dart';
@@ -7,12 +6,12 @@ import 'carousel_item.dart';
 /// Vertical page of every carousel item.
 ///
 /// Shown by Show all and the header arrow. Repeats [header] when one was set.
-class CarouselShowAll extends StatelessWidget {
-  /// CarouselShowAll.
-  const CarouselShowAll({required this.children, this.header, super.key});
+class M3CarouselShowAll extends StatelessWidget {
+  /// M3CarouselShowAll.
+  const M3CarouselShowAll({required this.children, this.header, super.key});
 
   /// The same items the carousel shows.
-  final List<CarouselItem> children;
+  final List<M3CarouselItem> children;
 
   /// Header repeated from the carousel, when it has one.
   final Widget? header;
@@ -38,7 +37,7 @@ class CarouselShowAll extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back),
                       tooltip: 'Back',
                       onPressed: () =>
-                          CarouselContainerTransformScope.closeOf(context),
+                          M3CarouselContainerTransformScope.closeOf(context),
                     ),
                   ],
                 ),
@@ -49,7 +48,7 @@ class CarouselShowAll extends StatelessWidget {
                 itemCount: children.length,
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 itemBuilder: (BuildContext context, int index) {
-                  final CarouselItem item = children[index];
+                  final M3CarouselItem item = children[index];
                   return _ShowAllRow(
                     headline: item.semanticLabel ?? 'Item ${index + 1}',
                     leading: SizedBox(width: 56, height: 56, child: item.image),
@@ -66,7 +65,7 @@ class CarouselShowAll extends StatelessWidget {
   }
 }
 
-/// One row of [CarouselShowAll]. When [transform] is set, tapping the row
+/// One row of [M3CarouselShowAll]. When [transform] is set, tapping the row
 /// morphs it into that full-screen destination.
 class _ShowAllRow extends StatelessWidget {
   const _ShowAllRow({
@@ -86,7 +85,7 @@ class _ShowAllRow extends StatelessWidget {
     if (object is! RenderBox || !object.hasSize) {
       return;
     }
-    CarouselContainerTransform.show<void>(
+    M3CarouselContainerTransform.show<void>(
       context: context,
       origin: object.localToGlobal(Offset.zero) & object.size,
       originRadius: 0,

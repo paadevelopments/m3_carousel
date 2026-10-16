@@ -40,7 +40,7 @@ extension _CarouselWrapperFocus on _CarouselWrapperState {
   }
 
   void _clearItemFocus(int index) {
-    CarouselFocusInteraction.instance.notePointerInteraction();
+    M3CarouselFocusInteraction.instance.notePointerInteraction();
     if (index < _itemFocus.length && _itemFocus[index].hasFocus) {
       _itemFocus[index].unfocus();
     }
@@ -109,7 +109,7 @@ extension _CarouselWrapperFocus on _CarouselWrapperState {
   }
 
   KeyEventResult _handleActivationKey(int index) {
-    final CarouselItem item = _itemAt(index);
+    final M3CarouselItem item = _itemAt(index);
     if (!item.enabled) {
       return KeyEventResult.handled;
     }
@@ -118,5 +118,5 @@ extension _CarouselWrapperFocus on _CarouselWrapperState {
     return KeyEventResult.handled;
   }
 
-  CarouselItem _itemAt(int index) => widget.children[index];
+  M3CarouselItem _itemAt(int index) => widget.children[index];
 }

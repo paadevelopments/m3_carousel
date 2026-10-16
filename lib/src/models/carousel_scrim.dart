@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 /// Scrim drawn over a carousel image and under its text.
-class CarouselScrim {
+class M3CarouselScrim {
   /// Creates a solid scrim.
-  const CarouselScrim({required this.color, this.opacity = 1})
+  const M3CarouselScrim({required this.color, this.opacity = 1})
     : gradient = null,
       _isGradient = false;
 
@@ -11,7 +11,7 @@ class CarouselScrim {
   ///
   /// A null [gradient] fades from transparent at the top to a translucent
   /// `colorScheme.scrim` at the bottom, under the text.
-  const CarouselScrim.gradient({this.gradient, this.opacity = 1})
+  const M3CarouselScrim.gradient({this.gradient, this.opacity = 1})
     : color = const Color(0x00000000),
       _isGradient = true;
 

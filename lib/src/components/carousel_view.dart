@@ -4,8 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import '../foundations/foundations.dart';
 import '../models/carousel_change_details.dart';
@@ -21,11 +20,11 @@ part 'carousel_controller.dart';
 
 /// A Material Design carousel widget.
 ///
-/// The [CarouselView] presents a scrollable list of items, each of which can
+/// The [M3CarouselView] presents a scrollable list of items, each of which can
 /// dynamically change size based on the chosen layout.
-class CarouselView extends StatefulWidget {
+class M3CarouselView extends StatefulWidget {
   /// Creates a Material Design carousel.
-  const CarouselView({
+  const M3CarouselView({
     super.key,
     this.padding,
     this.backgroundColor,
@@ -40,7 +39,7 @@ class CarouselView extends StatefulWidget {
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.onTap,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.enableSplash = true,
     this.infinite = false,
     this.physics,
@@ -57,7 +56,7 @@ class CarouselView extends StatefulWidget {
 
   /// Creates a scrollable list where the size of each child widget is dynamically
   /// determined by the provided [flexWeights].
-  const CarouselView.weighted({
+  const M3CarouselView.weighted({
     super.key,
     this.padding,
     this.backgroundColor,
@@ -73,7 +72,7 @@ class CarouselView extends StatefulWidget {
     this.reverse = false,
     this.consumeMaxWeight = true,
     this.onTap,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.enableSplash = true,
     this.infinite = false,
     this.physics,
@@ -88,7 +87,7 @@ class CarouselView extends StatefulWidget {
        itemCount = null;
 
   /// Creates a scrollable carousel with fixed-sized items created on demand.
-  const CarouselView.builder({
+  const M3CarouselView.builder({
     super.key,
     this.padding,
     this.backgroundColor,
@@ -103,7 +102,7 @@ class CarouselView extends StatefulWidget {
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.onTap,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.enableSplash = true,
     required double this.itemExtent,
     required this.itemBuilder,
@@ -119,7 +118,7 @@ class CarouselView extends StatefulWidget {
        children = const <Widget>[];
 
   /// Creates a scrollable carousel with weighted items created on demand.
-  const CarouselView.weightedBuilder({
+  const M3CarouselView.weightedBuilder({
     super.key,
     this.padding,
     this.backgroundColor,
@@ -135,7 +134,7 @@ class CarouselView extends StatefulWidget {
     this.reverse = false,
     this.consumeMaxWeight = true,
     this.onTap,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.enableSplash = true,
     required List<int> this.flexWeights,
     required this.itemBuilder,
@@ -225,7 +224,7 @@ class CarouselView extends StatefulWidget {
 
   /// An object that can be used to control the position to which this scroll
   /// view is scrolled.
-  final CarouselController? controller;
+  final M3CarouselController? controller;
 
   /// The [Axis] along which the scroll view's offset increases with each item.
   ///
@@ -245,8 +244,8 @@ class CarouselView extends StatefulWidget {
   /// Called when one of the [children] is tapped.
   final ValueChanged<int>? onTap;
 
-  /// Haptic intensity on item tap. Defaults to [CarouselHapticFeedback.none].
-  final CarouselHapticFeedback haptic;
+  /// Haptic intensity on item tap. Defaults to [M3CarouselHapticFeedback.none].
+  final M3CarouselHapticFeedback haptic;
 
   /// Determines whether an [InkWell] will cover each Carousel item.
   ///
@@ -255,7 +254,7 @@ class CarouselView extends StatefulWidget {
 
   /// The extent the children are forced to have in the main axis.
   ///
-  /// This is required for [CarouselView]. In [CarouselView.weighted], this
+  /// This is required for [M3CarouselView]. In [M3CarouselView.weighted], this
   /// is null.
   final double? itemExtent;
 
@@ -270,8 +269,8 @@ class CarouselView extends StatefulWidget {
 
   /// The weights that each visible child should occupy in the viewport.
   ///
-  /// This is a required property in [CarouselView.weighted]. This is null
-  /// for default [CarouselView]. The integers must be greater than 0.
+  /// This is a required property in [M3CarouselView.weighted]. This is null
+  /// for default [M3CarouselView]. The integers must be greater than 0.
   final List<int>? flexWeights;
 
   /// The child widgets for the carousel.
@@ -281,7 +280,7 @@ class CarouselView extends StatefulWidget {
   final ValueChanged<int>? onIndexChanged;
 
   /// Called when the leading or focal item index changes.
-  final ValueChanged<CarouselChangeDetails>? onChange;
+  final ValueChanged<M3CarouselChangeDetails>? onChange;
 
   /// Called to build carousel item on demand.
   final NullableIndexedWidgetBuilder? itemBuilder;
@@ -295,25 +294,25 @@ class CarouselView extends StatefulWidget {
   final bool infinite;
 
   @override
-  State<CarouselView> createState() => _CarouselViewState();
+  State<M3CarouselView> createState() => _CarouselViewState();
 }
 
-class _CarouselViewState extends State<CarouselView> {
+class _CarouselViewState extends State<M3CarouselView> {
   double? _itemExtent;
 
   List<int>? get _flexWeights => widget.flexWeights;
 
   bool get _consumeMaxWeight => widget.consumeMaxWeight;
-  CarouselController? _internalController;
+  M3CarouselController? _internalController;
 
-  CarouselController get _controller =>
+  M3CarouselController get _controller =>
       widget.controller ?? _internalController!;
   late int _lastReportedLeadingItem;
   late int _lastReportedFocalItem;
 
   /// Cached from [didChangeDependencies] so item builds do not each register
   /// a [Theme] dependency during sliver child updates.
-  late CarouselTheme _carouselTheme;
+  late M3CarouselTheme _carouselTheme;
   late ColorScheme _scheme;
 
   @override
@@ -321,7 +320,7 @@ class _CarouselViewState extends State<CarouselView> {
     super.initState();
     _itemExtent = widget.itemExtent;
     if (widget.controller == null) {
-      _internalController = CarouselController();
+      _internalController = M3CarouselController();
     }
     _lastReportedLeadingItem = _getInitialLeadingItem();
     _lastReportedFocalItem = _focalIndexForLeading(_lastReportedLeadingItem);
@@ -334,12 +333,12 @@ class _CarouselViewState extends State<CarouselView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final ThemeData theme = Theme.of(context);
-    _carouselTheme = CarouselTheme.of(context);
+    _carouselTheme = M3CarouselTheme.of(context);
     _scheme = theme.colorScheme;
   }
 
   @override
-  void didUpdateWidget(covariant CarouselView oldWidget) {
+  void didUpdateWidget(covariant M3CarouselView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller?._detach(this);
@@ -353,7 +352,7 @@ class _CarouselViewState extends State<CarouselView> {
           _internalController == null,
           'internal controller should be null when replacing with external',
         );
-        _internalController = CarouselController();
+        _internalController = M3CarouselController();
         _controller._carouselState = this;
       }
     }
@@ -404,7 +403,7 @@ class _CarouselViewState extends State<CarouselView> {
     _lastReportedLeadingItem = currentLeadingIndex;
     _lastReportedFocalItem = currentFocalIndex;
 
-    final details = CarouselChangeDetails(
+    final details = M3CarouselChangeDetails(
       leadingIndex: currentLeadingIndex,
       focalIndex: currentFocalIndex,
       itemCount: itemCount,
@@ -489,7 +488,7 @@ class _CarouselViewState extends State<CarouselView> {
     // Resolve tokens once per State lifetime rebuild via [build], not here —
     // calling Theme.of inside the item builder during a theme swap can
     // rebuild the weighted sliver mid-layout and drop the leading child.
-    final CarouselTheme carouselTheme = _carouselTheme;
+    final M3CarouselTheme carouselTheme = _carouselTheme;
     final ColorScheme scheme = _scheme;
     final EdgeInsets effectivePadding =
         widget.padding ?? carouselTheme.itemPadding as EdgeInsets;
@@ -516,7 +515,7 @@ class _CarouselViewState extends State<CarouselView> {
               onTap: widget.onTap == null
                   ? null
                   : () {
-                      CarouselHaptics.trigger(widget.haptic);
+                      M3CarouselHaptics.trigger(widget.haptic);
                       widget.onTap!(itemIndex);
                     },
               overlayColor: effectiveOverlayColor,
@@ -527,7 +526,7 @@ class _CarouselViewState extends State<CarouselView> {
     } else if (widget.onTap != null) {
       contents = GestureDetector(
         onTap: () {
-          CarouselHaptics.trigger(widget.haptic);
+          M3CarouselHaptics.trigger(widget.haptic);
           widget.onTap!(index);
         },
         child: contents,
@@ -600,7 +599,7 @@ class _CarouselViewState extends State<CarouselView> {
     );
   }
 
-  /// Start padding so the first item rests after [CarouselView.leadingInset].
+  /// Start padding so the first item rests after [M3CarouselView.leadingInset].
   EdgeInsetsGeometry? _leadingScrollPadding() {
     if (widget.leadingInset <= 0) {
       return null;
@@ -621,7 +620,7 @@ class _CarouselViewState extends State<CarouselView> {
   @override
   Widget build(BuildContext context) {
     final ScrollPhysics physics = widget.itemSnapping
-        ? const CarouselScrollPhysics()
+        ? const M3CarouselScrollPhysics()
         : ScrollConfiguration.of(context).getScrollPhysics(context);
 
     return LayoutBuilder(

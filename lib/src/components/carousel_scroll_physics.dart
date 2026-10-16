@@ -1,15 +1,15 @@
 part of 'carousel_view.dart';
 
-/// Scroll physics used by a [CarouselView].
+/// Scroll physics used by a [M3CarouselView].
 ///
 /// These physics cause the carousel item to snap to item boundaries.
-class CarouselScrollPhysics extends ScrollPhysics {
-  /// Creates physics for a [CarouselView].
-  const CarouselScrollPhysics({super.parent});
+class M3CarouselScrollPhysics extends ScrollPhysics {
+  /// Creates physics for a [M3CarouselView].
+  const M3CarouselScrollPhysics({super.parent});
 
   @override
-  CarouselScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CarouselScrollPhysics(parent: buildParent(ancestor));
+  M3CarouselScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return M3CarouselScrollPhysics(parent: buildParent(ancestor));
   }
 
   double _getTargetPixels(
@@ -85,8 +85,8 @@ class CarouselScrollPhysics extends ScrollPhysics {
   ) {
     assert(
       position is _CarouselPosition,
-      'CarouselScrollPhysics can only be used with Scrollables that uses '
-      'the CarouselController',
+      'M3CarouselScrollPhysics can only be used with Scrollables that uses '
+      'the M3CarouselController',
     );
 
     final metrics = position as _CarouselPosition;

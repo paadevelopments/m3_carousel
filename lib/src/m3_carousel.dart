@@ -1,8 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 import 'components/carousel_item.dart';
 import 'components/carousel_show_all.dart';
@@ -22,7 +21,7 @@ part 'components/carousel_header.dart';
 /// Creates a Material Design carousel.
 ///
 /// Layouts:
-///  * Multi-browse ([CarouselType.contained]): large, medium, and small.
+///  * Multi-browse ([M3CarouselType.contained]): large, medium, and small.
 ///  * Uncontained: one item size, scrolling to the container edge.
 ///  * Uncontained multi-aspect: widths from 9:16 to 16:9.
 ///  * Hero: one large item and a small peek.
@@ -39,22 +38,24 @@ class M3Carousel extends StatefulWidget {
     this.width,
     this.height,
     this.axis = Axis.horizontal,
-    this.type = CarouselType.hero,
+    this.type = M3CarouselType.hero,
     this.isExtended,
     this.freeScroll,
-    this.heroAlignment = HeroAlignment.center,
-    this.uncontainedItemExtent = CarouselTheme.defaultUncontainedItemExtent,
-    this.uncontainedShrinkExtent = CarouselTheme.defaultUncontainedShrinkExtent,
+    this.heroAlignment = M3HeroAlignment.center,
+    this.uncontainedItemExtent = M3CarouselTheme.defaultUncontainedItemExtent,
+    this.uncontainedShrinkExtent =
+        M3CarouselTheme.defaultUncontainedShrinkExtent,
     this.childElementBorderRadius,
     this.largeMaxWidth,
     this.itemPadding,
-    this.scrollAnimationDuration = CarouselTheme.defaultScrollAnimationDuration,
+    this.scrollAnimationDuration =
+        M3CarouselTheme.defaultScrollAnimationDuration,
     this.fixedPulseDelta = 4,
     this.singleSwipeGestureSensitivityRange =
-        CarouselTheme.defaultSingleSwipeGestureSensitivityRange,
+        M3CarouselTheme.defaultSingleSwipeGestureSensitivityRange,
     this.onTap,
     this.onChange,
-    this.haptic = CarouselHapticFeedback.none,
+    this.haptic = M3CarouselHapticFeedback.none,
     this.header,
     this.showAll = false,
     required this.children,
@@ -62,10 +63,10 @@ class M3Carousel extends StatefulWidget {
 
   /// Scroll and action controller. The carousel creates one when this is omitted.
   ///
-  /// Use [CarouselController.next], [CarouselController.previous],
-  /// [CarouselController.animateToItem], [CarouselController.jumpToItem],
-  /// and [CarouselController.showAll].
-  final CarouselController? controller;
+  /// Use [M3CarouselController.next], [M3CarouselController.previous],
+  /// [M3CarouselController.animateToItem], [M3CarouselController.jumpToItem],
+  /// and [M3CarouselController.showAll].
+  final M3CarouselController? controller;
 
   /// The explicit bounded width allocation applied to the root carousel container wrapper.
   final double? width;
@@ -75,11 +76,11 @@ class M3Carousel extends StatefulWidget {
 
   /// Scroll and layout axis. Defaults to [Axis.horizontal].
   ///
-  /// [CarouselType.fullScreen] always scrolls vertically.
+  /// [M3CarouselType.fullScreen] always scrolls vertically.
   final Axis axis;
 
   /// Specifies the structural layout rule type determining element sizes and scaling constraints.
-  final CarouselType type;
+  final M3CarouselType type;
 
   /// Expanded slot pattern.
   ///
@@ -95,12 +96,12 @@ class M3Carousel extends StatefulWidget {
   /// Defaults to false.
   final bool? freeScroll;
 
-  /// Focal-item alignment for [CarouselType.hero].
+  /// Focal-item alignment for [M3CarouselType.hero].
   ///
   /// Horizontal: left / center / right.
-  /// Vertical: [HeroAlignment.left] is top (start),
-  /// [HeroAlignment.right] is bottom (end).
-  final HeroAlignment heroAlignment;
+  /// Vertical: [M3HeroAlignment.left] is top (start),
+  /// [M3HeroAlignment.right] is bottom (end).
+  final M3HeroAlignment heroAlignment;
 
   /// Baseline main-axis extent for items in uncontained layouts
   /// (width when horizontal, height when vertical).
@@ -134,10 +135,10 @@ class M3Carousel extends StatefulWidget {
   final void Function(int selectedIndex)? onTap;
 
   /// Called when the leading or focal item index changes after scrolling.
-  final ValueChanged<CarouselChangeDetails>? onChange;
+  final ValueChanged<M3CarouselChangeDetails>? onChange;
 
-  /// Haptic intensity on item tap. Defaults to [CarouselHapticFeedback.none].
-  final CarouselHapticFeedback haptic;
+  /// Haptic intensity on item tap. Defaults to [M3CarouselHapticFeedback.none].
+  final M3CarouselHapticFeedback haptic;
 
   /// Title shown above the items, with an arrow that opens every item.
   final Widget? header;
@@ -147,7 +148,7 @@ class M3Carousel extends StatefulWidget {
   final bool showAll;
 
   /// Items rendered in the scroll track.
-  final List<CarouselItem> children;
+  final List<M3CarouselItem> children;
 
   @override
   State<M3Carousel> createState() => _M3CarouselState();
@@ -161,12 +162,13 @@ class _M3CarouselState extends State<M3Carousel> {
   List<int> layoutWeight = [];
   int itemScrolled = 0;
   List<double>? _aspectExtents;
-  CarouselController? _ownedController;
+  M3CarouselController? _ownedController;
   final GlobalKey _trackKey = GlobalKey();
 
-  CarouselController get _controller => widget.controller ?? _ownedController!;
+  M3CarouselController get _controller =>
+      widget.controller ?? _ownedController!;
 
-  bool get _fullScreen => widget.type == CarouselType.fullScreen;
+  bool get _fullScreen => widget.type == M3CarouselType.fullScreen;
 
   Axis get _axis => _fullScreen ? Axis.vertical : widget.axis;
 
@@ -180,7 +182,7 @@ class _M3CarouselState extends State<M3Carousel> {
   @override
   void initState() {
     if (widget.controller == null) {
-      _ownedController = CarouselController();
+      _ownedController = M3CarouselController();
     }
     _bindController(_controller);
     super.initState();
@@ -196,7 +198,7 @@ class _M3CarouselState extends State<M3Carousel> {
         _ownedController = null;
       }
       if (widget.controller == null) {
-        _ownedController = CarouselController();
+        _ownedController = M3CarouselController();
       }
       _bindController(_controller);
     }
@@ -221,7 +223,7 @@ class _M3CarouselState extends State<M3Carousel> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (BuildContext context) {
-        final CarouselTheme theme = CarouselTheme.of(context);
+        final M3CarouselTheme theme = M3CarouselTheme.of(context);
         final bool freeScroll = _freeScroll();
         final bool reduced = MediaQuery.disableAnimationsOf(context);
         return LayoutBuilder(
@@ -258,7 +260,7 @@ class _M3CarouselState extends State<M3Carousel> {
                 key: _trackKey,
                 child: Padding(
                   padding: container,
-                  child: CarouselWrapper(
+                  child: M3CarouselWrapper(
                     controller: _controller,
                     freeScroll: freeScroll,
                     itemSnapping: freeScroll,
@@ -281,13 +283,13 @@ class _M3CarouselState extends State<M3Carousel> {
                     itemExtents: varied,
                     leadingInset: _leadingGap(theme),
                     shrinkExtent:
-                        widget.type == CarouselType.uncontained ||
-                            widget.type == CarouselType.uncontainedMultiAspect
+                        widget.type == M3CarouselType.uncontained ||
+                            widget.type == M3CarouselType.uncontainedMultiAspect
                         ? widget.uncontainedShrinkExtent
                         : 0,
                     scaleItems:
-                        widget.type == CarouselType.uncontained ||
-                        widget.type == CarouselType.uncontainedMultiAspect,
+                        widget.type == M3CarouselType.uncontained ||
+                        widget.type == M3CarouselType.uncontainedMultiAspect,
                     reducedMotion: reduced,
                     fixedPulseDelta: widget.fixedPulseDelta,
                     children: widget.children,

@@ -1,10 +1,10 @@
 part of '../m3_carousel.dart';
 
 /// Resolves layout inputs (slot patterns, weights, extents, padding) for
-/// [_M3CarouselState] from the widget's [CarouselType] and theme.
+/// [_M3CarouselState] from the widget's [M3CarouselType] and theme.
 extension _CarouselLayoutResolution on _M3CarouselState {
-  bool _extended(CarouselTheme theme) {
-    if (widget.type == CarouselType.hero) {
+  bool _extended(M3CarouselTheme theme) {
+    if (widget.type == M3CarouselType.hero) {
       return false;
     }
     if (widget.isExtended != null) {
@@ -14,10 +14,10 @@ extension _CarouselLayoutResolution on _M3CarouselState {
   }
 
   /// Gap before the first uncontained item. Later rests keep that gap too.
-  double _leadingGap(CarouselTheme theme) {
+  double _leadingGap(M3CarouselTheme theme) {
     final bool uncontained =
-        widget.type == CarouselType.uncontained ||
-        widget.type == CarouselType.uncontainedMultiAspect;
+        widget.type == M3CarouselType.uncontained ||
+        widget.type == M3CarouselType.uncontainedMultiAspect;
     if (!_horizontal || !uncontained || widget.itemPadding != null) {
       return 0;
     }
@@ -26,37 +26,37 @@ extension _CarouselLayoutResolution on _M3CarouselState {
 
   List<int> _pattern(bool extended) {
     switch (widget.type) {
-      case CarouselType.hero:
+      case M3CarouselType.hero:
         switch (widget.heroAlignment) {
-          case HeroAlignment.left:
+          case M3HeroAlignment.left:
             return <int>[8, 2];
-          case HeroAlignment.center:
+          case M3HeroAlignment.center:
             return <int>[2, 6, 2];
-          case HeroAlignment.right:
+          case M3HeroAlignment.right:
             return <int>[2, 8];
         }
-      case CarouselType.contained:
+      case M3CarouselType.contained:
         return extended ? <int>[4, 3, 2, 1] : <int>[5, 4, 1];
-      case CarouselType.uncontained:
-      case CarouselType.uncontainedMultiAspect:
-      case CarouselType.fullScreen:
+      case M3CarouselType.uncontained:
+      case M3CarouselType.uncontainedMultiAspect:
+      case M3CarouselType.fullScreen:
         return const <int>[];
     }
   }
 
   List<int> _resolvedWeights(
-    CarouselTheme theme,
+    M3CarouselTheme theme,
     bool extended,
     bool reduced,
     double trackMain,
   ) {
     if (reduced ||
-        widget.type == CarouselType.uncontained ||
-        widget.type == CarouselType.uncontainedMultiAspect ||
+        widget.type == M3CarouselType.uncontained ||
+        widget.type == M3CarouselType.uncontainedMultiAspect ||
         _fullScreen) {
       return const <int>[];
     }
-    return CarouselLayout.clampWeights(
+    return M3CarouselLayout.clampWeights(
       pattern: _pattern(extended),
       viewport: trackMain,
       smallMin: theme.smallMinWidth,
@@ -65,28 +65,28 @@ extension _CarouselLayoutResolution on _M3CarouselState {
     );
   }
 
-  double? _fixedExtent(CarouselTheme theme, bool reduced, double trackMain) {
-    if (widget.type == CarouselType.uncontainedMultiAspect) {
+  double? _fixedExtent(M3CarouselTheme theme, bool reduced, double trackMain) {
+    if (widget.type == M3CarouselType.uncontainedMultiAspect) {
       return null;
     }
     if (_fullScreen) {
       // One item is the viewport. A gap here makes later pages land short.
       return trackMain;
     }
-    if (widget.type == CarouselType.uncontained) {
+    if (widget.type == M3CarouselType.uncontained) {
       return widget.uncontainedItemExtent;
     }
     if (!reduced) {
       return null;
     }
-    if (widget.type == CarouselType.hero) {
+    if (widget.type == M3CarouselType.hero) {
       return math.max(trackMain - theme.smallMaxWidth, trackMain * 0.5);
     }
     return trackMain;
   }
 
-  List<double>? _aspectExtentsFor(CarouselTheme theme, EdgeInsets container) {
-    if (widget.type != CarouselType.uncontainedMultiAspect) {
+  List<double>? _aspectExtentsFor(M3CarouselTheme theme, EdgeInsets container) {
+    if (widget.type != M3CarouselType.uncontainedMultiAspect) {
       return null;
     }
     final double cross = _horizontal
@@ -107,14 +107,14 @@ extension _CarouselLayoutResolution on _M3CarouselState {
     ];
   }
 
-  EdgeInsets _containerPadding(CarouselTheme theme, bool reduced) {
-    if (reduced && widget.type == CarouselType.contained) {
+  EdgeInsets _containerPadding(M3CarouselTheme theme, bool reduced) {
+    if (reduced && widget.type == M3CarouselType.contained) {
       return EdgeInsets.zero;
     }
     return theme.containerPaddingFor(widget.type);
   }
 
-  EdgeInsets _itemPadding(CarouselTheme theme, bool reduced) {
+  EdgeInsets _itemPadding(M3CarouselTheme theme, bool reduced) {
     if (widget.itemPadding != null) {
       return widget.itemPadding!.resolve(Directionality.of(context));
     }
@@ -125,12 +125,12 @@ extension _CarouselLayoutResolution on _M3CarouselState {
     if (themed != fallback) {
       return themed;
     }
-    if (_fullScreen || (reduced && widget.type == CarouselType.contained)) {
+    if (_fullScreen || (reduced && widget.type == M3CarouselType.contained)) {
       return EdgeInsets.zero;
     }
     final bool bleed =
-        widget.type == CarouselType.uncontained ||
-        widget.type == CarouselType.uncontainedMultiAspect;
+        widget.type == M3CarouselType.uncontained ||
+        widget.type == M3CarouselType.uncontainedMultiAspect;
     if (bleed) {
       // The gap is on the trailing side so the leading edge matches the flush
       // trailing edge of the track.

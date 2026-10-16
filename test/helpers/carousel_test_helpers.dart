@@ -3,8 +3,7 @@
 // (tap/scroll/keyboard/onChange interaction).
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_carousel/m3_carousel.dart';
-import 'package:material_ui/material_ui.dart'
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import 'package:material_ui/material_ui.dart';
 
 /// Asserts [picture] fills [card] (within 1px) on both edges, for the given
 /// fixture [width] and item [index] (used in the failure reason).
@@ -36,10 +35,10 @@ Widget hostCarousel(Widget child) {
 void enableCarouselItem() {}
 
 /// Builds [count] simple carousel items keyed by index.
-List<CarouselItem> carouselItems(int count) {
-  return <CarouselItem>[
+List<M3CarouselItem> carouselItems(int count) {
+  return <M3CarouselItem>[
     for (int i = 0; i < count; i++)
-      CarouselItem(
+      M3CarouselItem(
         onTap: enableCarouselItem,
         image: ColoredBox(
           key: ValueKey<int>(i),
@@ -87,23 +86,23 @@ Widget fullScreenCarouselHost() {
           width: 220,
           height: 360,
           child: M3Carousel(
-            type: CarouselType.fullScreen,
-            children: <CarouselItem>[
-              CarouselItem(
+            type: M3CarouselType.fullScreen,
+            children: <M3CarouselItem>[
+              M3CarouselItem(
                 onTap: enableCarouselItem,
                 image: ColoredBox(
                   key: ValueKey<int>(0),
                   color: Color(0xFF112233),
                 ),
               ),
-              CarouselItem(
+              M3CarouselItem(
                 onTap: enableCarouselItem,
                 image: ColoredBox(
                   key: ValueKey<int>(1),
                   color: Color(0xFF223344),
                 ),
               ),
-              CarouselItem(
+              M3CarouselItem(
                 onTap: enableCarouselItem,
                 image: ColoredBox(
                   key: ValueKey<int>(2),

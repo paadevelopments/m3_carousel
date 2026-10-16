@@ -1,8 +1,8 @@
 part of 'carousel_view.dart';
 
-/// Metrics for a [CarouselView].
+/// Metrics for a [M3CarouselView].
 class _CarouselMetrics extends FixedScrollMetrics {
-  /// Creates an immutable snapshot of values associated with a [CarouselView].
+  /// Creates an immutable snapshot of values associated with a [M3CarouselView].
   _CarouselMetrics({
     required super.minScrollExtent,
     required super.maxScrollExtent,

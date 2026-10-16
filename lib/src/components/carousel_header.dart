@@ -3,20 +3,20 @@ part of '../m3_carousel.dart';
 /// Header, "Show all" button, and the shared full-item-list transition for
 /// [_M3CarouselState].
 extension _CarouselHeader on _M3CarouselState {
-  void _openList(CarouselTheme theme) {
+  void _openList(M3CarouselTheme theme) {
     final box = _trackKey.currentContext?.findRenderObject() as RenderBox?;
     if (box == null || !box.hasSize) {
       return;
     }
     final Rect origin = box.localToGlobal(Offset.zero) & box.size;
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    CarouselContainerTransform.show<void>(
+    M3CarouselContainerTransform.show<void>(
       context: context,
       origin: origin,
       originRadius: theme.radiusFor(widget.type),
       originColor: scheme.surface,
       builder: (BuildContext context) {
-        return CarouselShowAll(
+        return M3CarouselShowAll(
           header: widget.header,
           children: widget.children,
         );
@@ -24,7 +24,7 @@ extension _CarouselHeader on _M3CarouselState {
     );
   }
 
-  Widget _header(CarouselTheme theme) {
+  Widget _header(M3CarouselTheme theme) {
     return SizedBox(
       height: theme.arrowSize,
       child: Padding(
@@ -44,7 +44,7 @@ extension _CarouselHeader on _M3CarouselState {
     );
   }
 
-  Widget _showAll(CarouselTheme theme) {
+  Widget _showAll(M3CarouselTheme theme) {
     return Align(
       alignment: AlignmentDirectional.centerEnd,
       child: Padding(

@@ -35,42 +35,40 @@ Then replace your Material imports:
 import "package:flutter/material.dart";
 
 // After
-import "package:material_ui/material_ui.dart"
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import "package:material_ui/material_ui.dart";
 ```
-`m3_carousel` exports its own `CarouselController`, `CarouselScrollPhysics` and `CarouselView`,
-so hide material_ui's versions of those names wherever you import both packages.
+Every public `m3_carousel` type carries the `M3` prefix (`M3CarouselItem`, `M3CarouselController`,
+`M3CarouselView`, ...), so it imports alongside material_ui without name clashes.
 
 ## Usage
 ```dart
 import "package:m3_carousel/m3_carousel.dart";
-import "package:material_ui/material_ui.dart"
-    hide CarouselController, CarouselScrollPhysics, CarouselView;
+import "package:material_ui/material_ui.dart";
 
 M3Carousel(
-  type: CarouselType.hero,
-  heroAlignment: HeroAlignment.center,
+  type: M3CarouselType.hero,
+  heroAlignment: M3HeroAlignment.center,
   axis: Axis.horizontal,
   onTap: (int tapIndex) => log(tapIndex.toString()),
-  children: List<CarouselItem>.generate(10, (int index) {
-    return CarouselItem(
+  children: List<M3CarouselItem>.generate(10, (int index) {
+    return M3CarouselItem(
       image: Image.asset("assets/i${index % 6 + 1}.png", fit: BoxFit.cover),
       title: Text("Item $index"),
-      showScrim: const CarouselScrim.gradient(),
+      showScrim: const M3CarouselScrim.gradient(),
       onTap: () {},
     );
   }),
 ),
 ```
-Available layouts: `CarouselType.hero`, `CarouselType.contained`, `CarouselType.uncontained`,
-`CarouselType.uncontainedMultiAspect` and `CarouselType.fullScreen`.
+Available layouts: `M3CarouselType.hero`, `M3CarouselType.contained`, `M3CarouselType.uncontained`,
+`M3CarouselType.uncontainedMultiAspect` and `M3CarouselType.fullScreen`.
 
-Customize spec defaults by installing a `CarouselTheme` extension:
+Customize spec defaults by installing an `M3CarouselTheme` extension:
 ```dart
 MaterialApp(
   theme: ThemeData(
     extensions: const <ThemeExtension<dynamic>>[
-      CarouselTheme(itemGap: 8, borderRadiusValue: 28),
+      M3CarouselTheme(itemGap: 8, borderRadiusValue: 28),
     ],
   ),
 );

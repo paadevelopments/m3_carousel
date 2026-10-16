@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 
 /// Haptic feedback intensity levels for carousel interactions.
 ///
-/// Use with [CarouselHaptics.trigger], component decoration / style haptic fields,
+/// Use with [M3CarouselHaptics.trigger], component decoration / style haptic fields,
 /// or the shared tappable interaction primitive.
 ///
 /// ## Levels
@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 /// - [light] — Light tap feedback for subtle interactions
 /// - [medium] — Medium impact for standard presses
 /// - [heavy] — Heavy impact for significant actions
-enum CarouselHapticFeedback {
+enum M3CarouselHapticFeedback {
   /// No haptic feedback.
   none(0),
 
@@ -26,26 +26,26 @@ enum CarouselHapticFeedback {
   /// Ordinal value for the level.
   final int value;
 
-  const CarouselHapticFeedback(this.value);
+  const M3CarouselHapticFeedback(this.value);
 }
 
 /// Shared haptic helpers for Material 3 Expressive components.
 ///
 /// Prefer this API over raw [HapticFeedback] calls so intensity stays consistent
 /// and platform no-ops remain centralized.
-abstract final class CarouselHaptics {
-  const CarouselHaptics._();
+abstract final class M3CarouselHaptics {
+  const M3CarouselHaptics._();
 
-  /// Fires impact feedback for [level]. [CarouselHapticFeedback.none] is a no-op.
-  static void trigger(CarouselHapticFeedback level) {
+  /// Fires impact feedback for [level]. [M3CarouselHapticFeedback.none] is a no-op.
+  static void trigger(M3CarouselHapticFeedback level) {
     switch (level) {
-      case CarouselHapticFeedback.light:
+      case M3CarouselHapticFeedback.light:
         HapticFeedback.lightImpact();
-      case CarouselHapticFeedback.medium:
+      case M3CarouselHapticFeedback.medium:
         HapticFeedback.mediumImpact();
-      case CarouselHapticFeedback.heavy:
+      case M3CarouselHapticFeedback.heavy:
         HapticFeedback.heavyImpact();
-      case CarouselHapticFeedback.none:
+      case M3CarouselHapticFeedback.none:
         break;
     }
   }

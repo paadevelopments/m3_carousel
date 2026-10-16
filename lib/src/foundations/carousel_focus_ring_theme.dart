@@ -2,16 +2,17 @@ import 'package:material_ui/material_ui.dart';
 
 /// Shared tokens for the Material 3 Expressive keyboard focus ring.
 @immutable
-class CarouselFocusRingTheme extends ThemeExtension<CarouselFocusRingTheme> {
+class M3CarouselFocusRingTheme
+    extends ThemeExtension<M3CarouselFocusRingTheme> {
   /// Creates focus ring theme tokens.
-  const CarouselFocusRingTheme({this.color, this.width = 2, this.gap = 2});
+  const M3CarouselFocusRingTheme({this.color, this.width = 2, this.gap = 2});
 
   /// Package defaults.
-  static const CarouselFocusRingTheme defaults = CarouselFocusRingTheme();
+  static const M3CarouselFocusRingTheme defaults = M3CarouselFocusRingTheme();
 
   /// The ambient focus ring theme, or [defaults] when none is installed.
-  static CarouselFocusRingTheme of(BuildContext context) =>
-      Theme.of(context).extension<CarouselFocusRingTheme>() ?? defaults;
+  static M3CarouselFocusRingTheme of(BuildContext context) =>
+      Theme.of(context).extension<M3CarouselFocusRingTheme>() ?? defaults;
 
   /// Optional override; when null, resolves to [ColorScheme.primary].
   final Color? color;
@@ -29,13 +30,13 @@ class CarouselFocusRingTheme extends ThemeExtension<CarouselFocusRingTheme> {
   Color resolveColor(ColorScheme scheme) => color ?? scheme.primary;
 
   @override
-  CarouselFocusRingTheme copyWith({
+  M3CarouselFocusRingTheme copyWith({
     Color? color,
     bool clearColor = false,
     double? width,
     double? gap,
   }) {
-    return CarouselFocusRingTheme(
+    return M3CarouselFocusRingTheme(
       color: clearColor ? null : (color ?? this.color),
       width: width ?? this.width,
       gap: gap ?? this.gap,
@@ -43,11 +44,11 @@ class CarouselFocusRingTheme extends ThemeExtension<CarouselFocusRingTheme> {
   }
 
   @override
-  CarouselFocusRingTheme lerp(CarouselFocusRingTheme? other, double t) {
-    if (other is! CarouselFocusRingTheme) {
+  M3CarouselFocusRingTheme lerp(M3CarouselFocusRingTheme? other, double t) {
+    if (other is! M3CarouselFocusRingTheme) {
       return this;
     }
-    return CarouselFocusRingTheme(
+    return M3CarouselFocusRingTheme(
       color: Color.lerp(color, other.color, t) ?? color ?? other.color,
       width: _lerpDouble(width, other.width, t),
       gap: _lerpDouble(gap, other.gap, t),
@@ -61,7 +62,7 @@ class CarouselFocusRingTheme extends ThemeExtension<CarouselFocusRingTheme> {
     if (identical(this, other)) {
       return true;
     }
-    return other is CarouselFocusRingTheme &&
+    return other is M3CarouselFocusRingTheme &&
         other.color == color &&
         other.width == width &&
         other.gap == gap;

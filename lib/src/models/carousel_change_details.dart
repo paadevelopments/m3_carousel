@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 /// Snapshot of carousel scroll layout for the carousel `onChange` callback.
 @immutable
-class CarouselChangeDetails {
+class M3CarouselChangeDetails {
   /// Creates carousel change details.
-  const CarouselChangeDetails({
+  const M3CarouselChangeDetails({
     required this.leadingIndex,
     required this.focalIndex,
     required this.itemCount,
@@ -24,7 +24,7 @@ class CarouselChangeDetails {
 
   @override
   bool operator ==(Object other) {
-    return other is CarouselChangeDetails &&
+    return other is M3CarouselChangeDetails &&
         other.leadingIndex == leadingIndex &&
         other.focalIndex == focalIndex &&
         other.itemCount == itemCount;
@@ -35,7 +35,7 @@ class CarouselChangeDetails {
 
   @override
   String toString() {
-    return 'CarouselChangeDetails('
+    return 'M3CarouselChangeDetails('
         'leadingIndex: $leadingIndex, '
         'focalIndex: $focalIndex, '
         'itemCount: $itemCount)';
