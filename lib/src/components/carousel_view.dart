@@ -1,16 +1,15 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:material_ui/material_ui.dart'
     hide CarouselController, CarouselScrollPhysics, CarouselView;
-import 'package:flutter/rendering.dart';
 
-import 'carousel_theme.dart';
+import '../foundations/foundations.dart';
+import '../models/carousel_change_details.dart';
+import '../styles/carousel_theme.dart';
 
 part 'sliver_fixed_extent_carousel.dart';
 part 'sliver_weighted_carousel.dart';
@@ -36,16 +35,21 @@ class CarouselView extends StatefulWidget {
     this.overlayColor,
     this.itemSnapping = false,
     this.shrinkExtent = 0.0,
+    this.scaleItems = true,
     this.controller,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.onTap,
+    this.haptic = CarouselHapticFeedback.none,
     this.enableSplash = true,
     this.infinite = false,
     this.physics,
     required double this.itemExtent,
     required this.children,
     this.onIndexChanged,
+    this.onChange,
+    this.leadingInset = 0,
+    this.restingExtents,
   }) : consumeMaxWeight = true,
        flexWeights = null,
        itemBuilder = null,
@@ -63,18 +67,23 @@ class CarouselView extends StatefulWidget {
     this.overlayColor,
     this.itemSnapping = false,
     this.shrinkExtent = 0.0,
+    this.scaleItems = true,
     this.controller,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.consumeMaxWeight = true,
     this.onTap,
+    this.haptic = CarouselHapticFeedback.none,
     this.enableSplash = true,
     this.infinite = false,
     this.physics,
     required List<int> this.flexWeights,
     required this.children,
     this.onIndexChanged,
+    this.onChange,
+    this.leadingInset = 0,
   }) : itemExtent = null,
+       restingExtents = null,
        itemBuilder = null,
        itemCount = null;
 
@@ -89,19 +98,24 @@ class CarouselView extends StatefulWidget {
     this.overlayColor,
     this.itemSnapping = false,
     this.shrinkExtent = 0.0,
+    this.scaleItems = true,
     this.controller,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.onTap,
+    this.haptic = CarouselHapticFeedback.none,
     this.enableSplash = true,
     required double this.itemExtent,
     required this.itemBuilder,
     this.itemCount,
     this.onIndexChanged,
+    this.onChange,
     this.infinite = false,
     this.physics,
+    this.leadingInset = 0,
   }) : consumeMaxWeight = true,
        flexWeights = null,
+       restingExtents = null,
        children = const <Widget>[];
 
   /// Creates a scrollable carousel with weighted items created on demand.
@@ -115,20 +129,29 @@ class CarouselView extends StatefulWidget {
     this.overlayColor,
     this.itemSnapping = false,
     this.shrinkExtent = 0.0,
+    this.scaleItems = true,
     this.controller,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     this.consumeMaxWeight = true,
     this.onTap,
+    this.haptic = CarouselHapticFeedback.none,
     this.enableSplash = true,
     required List<int> this.flexWeights,
     required this.itemBuilder,
     this.itemCount,
     this.onIndexChanged,
+    this.onChange,
     this.infinite = false,
     this.physics,
+    this.leadingInset = 0,
   }) : itemExtent = null,
+       restingExtents = null,
        children = const <Widget>[];
+
+  /// Empty space before the first item. It scrolls away and does not
+  /// change item sizes.
+  final double leadingInset;
 
   /// The amount of space to surround each carousel item with.
   ///
@@ -189,6 +212,11 @@ class CarouselView extends StatefulWidget {
   /// this remaining space, ensuring a smooth size transition.
   final double shrinkExtent;
 
+  /// Whether fixed-extent items shrink while scrolling.
+  ///
+  /// When false, every item keeps [itemExtent] and slides.
+  final bool scaleItems;
+
   /// Whether the carousel should keep scrolling to the next/previous items to
   /// maintain the original layout.
   ///
@@ -217,6 +245,9 @@ class CarouselView extends StatefulWidget {
   /// Called when one of the [children] is tapped.
   final ValueChanged<int>? onTap;
 
+  /// Haptic intensity on item tap. Defaults to [CarouselHapticFeedback.none].
+  final CarouselHapticFeedback haptic;
+
   /// Determines whether an [InkWell] will cover each Carousel item.
   ///
   /// Defaults to true.
@@ -227,6 +258,9 @@ class CarouselView extends StatefulWidget {
   /// This is required for [CarouselView]. In [CarouselView.weighted], this
   /// is null.
   final double? itemExtent;
+
+  /// Resting size of each item. Items shrink from these sizes while scrolling.
+  final List<double>? restingExtents;
 
   /// The scrollPhysics to apply to the carousel layout.
   ///
@@ -245,6 +279,9 @@ class CarouselView extends StatefulWidget {
 
   /// A callback invoked when the leading item changes.
   final ValueChanged<int>? onIndexChanged;
+
+  /// Called when the leading or focal item index changes.
+  final ValueChanged<CarouselChangeDetails>? onChange;
 
   /// Called to build carousel item on demand.
   final NullableIndexedWidgetBuilder? itemBuilder;
@@ -272,6 +309,12 @@ class _CarouselViewState extends State<CarouselView> {
   CarouselController get _controller =>
       widget.controller ?? _internalController!;
   late int _lastReportedLeadingItem;
+  late int _lastReportedFocalItem;
+
+  /// Cached from [didChangeDependencies] so item builds do not each register
+  /// a [Theme] dependency during sliver child updates.
+  late CarouselTheme _carouselTheme;
+  late ColorScheme _scheme;
 
   @override
   void initState() {
@@ -281,9 +324,18 @@ class _CarouselViewState extends State<CarouselView> {
       _internalController = CarouselController();
     }
     _lastReportedLeadingItem = _getInitialLeadingItem();
+    _lastReportedFocalItem = _focalIndexForLeading(_lastReportedLeadingItem);
     _controller
       .._carouselState = this
       ..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ThemeData theme = Theme.of(context);
+    _carouselTheme = CarouselTheme.of(context);
+    _scheme = theme.colorScheme;
   }
 
   @override
@@ -308,9 +360,12 @@ class _CarouselViewState extends State<CarouselView> {
     if (widget.flexWeights != oldWidget.flexWeights) {
       (_controller.position as _CarouselPosition).flexWeights = _flexWeights;
     }
-    if (widget.itemExtent != oldWidget.itemExtent) {
+    if (widget.itemExtent != oldWidget.itemExtent ||
+        widget.restingExtents != oldWidget.restingExtents) {
       _itemExtent = widget.itemExtent;
-      (_controller.position as _CarouselPosition).itemExtent = _itemExtent;
+      (_controller.position as _CarouselPosition)
+        ..restingExtents = widget.restingExtents
+        ..itemExtent = _itemExtent;
     }
     if (widget.consumeMaxWeight != oldWidget.consumeMaxWeight) {
       (_controller.position as _CarouselPosition).consumeMaxWeight =
@@ -328,17 +383,88 @@ class _CarouselViewState extends State<CarouselView> {
   }
 
   void _handleScroll() {
-    if (widget.onIndexChanged == null) {
+    if (widget.onIndexChanged == null && widget.onChange == null) {
       return;
     }
 
-    final ScrollPosition position = _controller.position;
-    final int currentLeadingIndex = (position as _CarouselPosition).leadingItem;
+    final position = _controller.position as _CarouselPosition;
+    // Round continuous scroll item (not truncate) so forward and reverse
+    // swipes report the new leading/focal at the midpoint — truncation via
+    // [leadingItem] delays next-item updates until nearly fully scrolled.
+    final currentLeadingIndex = _reportedLeadingIndex(position);
+    final currentFocalIndex = _focalIndexForLeading(currentLeadingIndex);
+    final itemCount = widget.itemCount ?? widget.children.length;
 
-    if (currentLeadingIndex != _lastReportedLeadingItem) {
-      _lastReportedLeadingItem = currentLeadingIndex;
-      widget.onIndexChanged!(currentLeadingIndex);
+    final leadingChanged = currentLeadingIndex != _lastReportedLeadingItem;
+    final focalChanged = currentFocalIndex != _lastReportedFocalItem;
+    if (!leadingChanged && !focalChanged) {
+      return;
     }
+
+    _lastReportedLeadingItem = currentLeadingIndex;
+    _lastReportedFocalItem = currentFocalIndex;
+
+    final details = CarouselChangeDetails(
+      leadingIndex: currentLeadingIndex,
+      focalIndex: currentFocalIndex,
+      itemCount: itemCount,
+    );
+    void notify() {
+      if (!mounted) {
+        return;
+      }
+      if (leadingChanged) {
+        widget.onIndexChanged?.call(currentLeadingIndex);
+      }
+      widget.onChange?.call(details);
+    }
+
+    final SchedulerPhase phase = SchedulerBinding.instance.schedulerPhase;
+    if (phase == SchedulerPhase.persistentCallbacks ||
+        phase == SchedulerPhase.midFrameMicrotasks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => notify());
+      return;
+    }
+    notify();
+  }
+
+  /// Leading index for change callbacks; mirrors [ _CarouselPosition.leadingItem]
+  /// but uses [num.round] so both swipe directions cross at the half-item mark.
+  int _reportedLeadingIndex(_CarouselPosition position) {
+    if (!position.hasPixels ||
+        !position.hasViewportDimension ||
+        position.viewportDimension <= 0) {
+      return _lastReportedLeadingItem;
+    }
+    var leading = position
+        .getItemFromPixels(position.pixels, position.viewportDimension)
+        .round();
+    if (position.consumeMaxWeight && position.flexWeights != null) {
+      leading = math.max(
+        leading - position.flexWeights!.indexOf(position.flexWeights!.max),
+        0,
+      );
+    }
+    if (position.infinite &&
+        position.itemCount != null &&
+        position.itemCount! > 0) {
+      leading = leading % position.itemCount!;
+    }
+    return leading;
+  }
+
+  int _focalIndexForLeading(int leadingIndex) {
+    final List<int>? weights = widget.flexWeights;
+    if (weights == null || weights.isEmpty) {
+      return leadingIndex;
+    }
+    final int maxWeight = weights.max;
+    final int firstMaxWeightIndex = weights.indexOf(maxWeight);
+    final int itemCount = widget.itemCount ?? widget.children.length;
+    if (itemCount <= 0) {
+      return leadingIndex;
+    }
+    return (leadingIndex + firstMaxWeightIndex).clamp(0, itemCount - 1);
   }
 
   // For weighted carousel, the initialItem means the index of the item to occupy the first maximum weight
@@ -360,27 +486,22 @@ class _CarouselViewState extends State<CarouselView> {
     if (widget.infinite && widget.children.isNotEmpty) {
       itemIndex = index % widget.children.length;
     }
-    const CarouselTheme carouselTheme = CarouselTheme.defaults;
+    // Resolve tokens once per State lifetime rebuild via [build], not here —
+    // calling Theme.of inside the item builder during a theme swap can
+    // rebuild the weighted sliver mid-layout and drop the leading child.
+    final CarouselTheme carouselTheme = _carouselTheme;
+    final ColorScheme scheme = _scheme;
     final EdgeInsets effectivePadding =
         widget.padding ?? carouselTheme.itemPadding as EdgeInsets;
+    final Color effectiveBackgroundColor =
+        widget.backgroundColor ?? carouselTheme.backgroundColor(scheme);
     final double effectiveElevation =
         widget.elevation ?? carouselTheme.elevation;
     final ShapeBorder effectiveShape = widget.shape ?? carouselTheme.shape;
     final Clip effectiveItemClipBehavior =
         widget.itemClipBehavior ?? carouselTheme.itemClipBehavior;
-    final Color? backgroundOverride = widget.backgroundColor;
-    final WidgetStateProperty<Color?>? overlayOverride = widget.overlayColor;
-    final bool needsScheme =
-        backgroundOverride == null ||
-        (widget.enableSplash && overlayOverride == null);
-    final ColorScheme? scheme = needsScheme
-        ? Theme.of(context).colorScheme
-        : null;
-    final Color effectiveBackgroundColor =
-        backgroundOverride ?? carouselTheme.backgroundColor(scheme!);
-    final WidgetStateProperty<Color?>? effectiveOverlayColor =
-        overlayOverride ??
-        (widget.enableSplash ? carouselTheme.overlayColor(scheme!) : null);
+    final WidgetStateProperty<Color?> effectiveOverlayColor =
+        widget.overlayColor ?? carouselTheme.overlayColor(scheme);
 
     Widget contents = widget.children[itemIndex];
 
@@ -392,7 +513,12 @@ class _CarouselViewState extends State<CarouselView> {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => widget.onTap?.call(itemIndex),
+              onTap: widget.onTap == null
+                  ? null
+                  : () {
+                      CarouselHaptics.trigger(widget.haptic);
+                      widget.onTap!(itemIndex);
+                    },
               overlayColor: effectiveOverlayColor,
             ),
           ),
@@ -400,7 +526,10 @@ class _CarouselViewState extends State<CarouselView> {
       );
     } else if (widget.onTap != null) {
       contents = GestureDetector(
-        onTap: () => widget.onTap!(index),
+        onTap: () {
+          CarouselHaptics.trigger(widget.haptic);
+          widget.onTap!(index);
+        },
         child: contents,
       );
     }
@@ -451,7 +580,9 @@ class _CarouselViewState extends State<CarouselView> {
       return _SliverFixedExtentCarousel(
         itemExtent: _itemExtent!,
         minExtent: widget.shrinkExtent,
+        scaleItems: widget.scaleItems,
         infinite: widget.infinite,
+        restingExtents: widget.restingExtents,
         delegate: delegate,
       );
     }
@@ -469,6 +600,24 @@ class _CarouselViewState extends State<CarouselView> {
     );
   }
 
+  /// Start padding so the first item rests after [CarouselView.leadingInset].
+  EdgeInsetsGeometry? _leadingScrollPadding() {
+    if (widget.leadingInset <= 0) {
+      return null;
+    }
+    final vertical = widget.scrollDirection == Axis.vertical;
+    if (vertical) {
+      return widget.reverse
+          ? EdgeInsets.only(bottom: widget.leadingInset)
+          : EdgeInsets.only(top: widget.leadingInset);
+    }
+    final startIsRight =
+        (Directionality.of(context) == TextDirection.rtl) != widget.reverse;
+    return startIsRight
+        ? EdgeInsets.only(right: widget.leadingInset)
+        : EdgeInsets.only(left: widget.leadingInset);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ScrollPhysics physics = widget.itemSnapping
@@ -482,17 +631,31 @@ class _CarouselViewState extends State<CarouselView> {
           Axis.vertical => constraints.maxHeight,
         };
 
+        final double leading = widget.scrollDirection == Axis.horizontal
+            ? widget.leadingInset
+            : 0;
         _itemExtent = widget.itemExtent == null
             ? null
-            : clampDouble(widget.itemExtent!, 0, mainAxisExtent);
+            : clampDouble(
+                widget.itemExtent!,
+                0,
+                math.max(0, mainAxisExtent - leading),
+              );
+        final Widget sliver = _buildSliverCarousel(context);
+        final EdgeInsetsGeometry? leadingPadding = _leadingScrollPadding();
         return CustomScrollView(
           scrollDirection: widget.scrollDirection,
           reverse: widget.reverse,
           controller: _controller,
           physics: widget.physics ?? physics,
-          clipBehavior: Clip.antiAlias,
+          clipBehavior: Clip.none,
           scrollCacheExtent: const ScrollCacheExtent.viewport(0),
-          slivers: <Widget>[_buildSliverCarousel(context)],
+          slivers: <Widget>[
+            if (leadingPadding == null)
+              sliver
+            else
+              SliverPadding(padding: leadingPadding, sliver: sliver),
+          ],
         );
       },
     );

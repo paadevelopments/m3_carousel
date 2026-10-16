@@ -1,6 +1,10 @@
-import "package:flutter/widgets.dart" show Axis;
+import 'package:flutter/cupertino.dart' show Axis;
+import 'package:flutter/painting.dart' show Axis;
+import 'package:flutter/rendering.dart' show Axis;
+import 'package:flutter/widgets.dart' show Axis;
+import 'package:material_ui/material_ui.dart' show Axis;
 
-/// Defines the visual presentation and layout style of an [M3Carousel].
+/// Defines the visual presentation and layout style of an `M3Carousel`.
 enum CarouselType {
   /// A large, prominent carousel that spotlights one big item with small
   /// peeking neighbours. Shows 2 - 3 visible items depending on
@@ -15,6 +19,15 @@ enum CarouselType {
   /// A carousel whose items scroll to the edge of the container, all sharing a
   /// uniform extent.
   uncontained,
+
+  /// Uncontained items with their own widths, from 9:16 to 16:9.
+  ///
+  /// Items keep those widths while scrolling. They do not grow or shrink
+  /// into a shared slot.
+  uncontainedMultiAspect,
+
+  /// One edge-to-edge item that fills the carousel and snaps vertically.
+  fullScreen,
 }
 
 /// The alignment of the focal item in a [CarouselType.hero] carousel.

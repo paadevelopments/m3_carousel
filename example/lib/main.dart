@@ -1,11 +1,52 @@
 import "dart:developer";
 
-import "package:material_ui/material_ui.dart";
 import "package:m3_carousel/m3_carousel.dart";
+import "package:material_ui/material_ui.dart"
+    hide CarouselController, CarouselScrollPhysics, CarouselView;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(home: MyApp()));
+  runApp(
+    MaterialApp(
+      theme: ThemeData(colorSchemeSeed: const Color(0xFF6750A4)),
+      home: const MyApp(),
+    ),
+  );
+}
+
+const List<Map<String, String>> images = [
+  {"image": "assets/i1.png", "title": "Android"},
+  {"image": "assets/i2.png", "title": "IOS"},
+  {"image": "assets/i3.png", "title": "Windows"},
+  {"image": "assets/i4.png", "title": "Mac"},
+  {"image": "assets/i5.png", "title": "Linux"},
+  {"image": "assets/i6.png", "title": "Others"},
+];
+
+List<CarouselItem> carouselItems({bool varyAspect = false}) {
+  return List<CarouselItem>.generate(images.length, (int index) {
+    final Map<String, String> image = images[index];
+    return CarouselItem(
+      semanticLabel: image["title"],
+      image: Image.asset(image["image"]!, fit: BoxFit.cover),
+      title: Text(
+        image["title"]!,
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      subtitle: const Text("Photo", style: TextStyle(color: Colors.white)),
+      prefixText: Text(
+        "P${index + 1}",
+        style: const TextStyle(color: Colors.white),
+      ),
+      aspectRatio: varyAspect && index.isOdd ? 9 / 16 : 16 / 9,
+      showScrim: const CarouselScrim.gradient(),
+      onTap: () => log(index.toString()),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -13,80 +54,79 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> images = [
-      {"image": "assets/i1.png", "title": "Android"},
-      {"image": "assets/i2.png", "title": "IOS"},
-      {"image": "assets/i3.png", "title": "Windows"},
-      {"image": "assets/i4.png", "title": "Mac"},
-      {"image": "assets/i5.png", "title": "Linux"},
-      {"image": "assets/i6.png", "title": "Others"},
-    ];
     return Scaffold(
       appBar: AppBar(title: const Text("Material Design 3 Carousel")),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Column(
-              children: [
-                const LabelWidget(text: "Hero layout"),
-                LayoutWidget(
-                  child: M3Carousel(
-                    type: CarouselType.hero,
-                    heroAlignment: HeroAlignment.center,
-                    onTap: (int tapIndex) => log(tapIndex.toString()),
-                    children: images
-                        .asMap()
-                        .entries
-                        .map(
-                          (listItem) => ImageElement(listValue: listItem.value),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
+            const LabelWidget(text: "Hero layout"),
+            LayoutWidget(
+              child: M3Carousel(
+                type: CarouselType.hero,
+                heroAlignment: HeroAlignment.center,
+                onTap: (int tapIndex) => log(tapIndex.toString()),
+                children: carouselItems(),
+              ),
             ),
             const SizedBox(height: 20),
-            Column(
-              children: [
-                const LabelWidget(text: "Contained layout"),
-                LayoutWidget(
-                  child: M3Carousel(
-                    type: CarouselType.contained,
-                    onTap: (int tapIndex) => log(tapIndex.toString()),
-                    children: List<Widget>.generate(10, (int index) {
-                      return ColoredBox(
-                        color: Colors.primaries[index % Colors.primaries.length]
-                            .withValues(alpha: 0.8),
-                        child: const SizedBox.expand(),
-                      );
-                    }),
-                  ),
-                ),
-              ],
+            const LabelWidget(text: "Contained layout"),
+            LayoutWidget(
+              height: 220,
+              child: M3Carousel(
+                type: CarouselType.contained,
+                header: const Text("Platforms"),
+                onTap: (int tapIndex) => log(tapIndex.toString()),
+                children: carouselItems(),
+              ),
             ),
             const SizedBox(height: 20),
-            Column(
-              children: [
-                const LabelWidget(text: "Uncontained layout"),
-                LayoutWidget(
-                  isExpanded: true,
-                  child: M3Carousel(
-                    type: CarouselType.uncontained,
-                    freeScroll: false,
-                    onTap: (int tapIndex) => log(tapIndex.toString()),
-                    children: List<Widget>.generate(10, (int index) {
-                      return ContainedLayoutCard(
-                        index: index,
-                        label: "Show $index",
-                      );
-                    }),
-                  ),
+            const LabelWidget(text: "Uncontained layout"),
+            LayoutWidget(
+              height: 220,
+              child: M3Carousel(
+                type: CarouselType.uncontained,
+                showAll: true,
+                onTap: (int tapIndex) => log(tapIndex.toString()),
+                children: carouselItems(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const LabelWidget(text: "Uncontained multi-aspect layout"),
+            LayoutWidget(
+              child: M3Carousel(
+                type: CarouselType.uncontainedMultiAspect,
+                onTap: (int tapIndex) => log(tapIndex.toString()),
+                children: carouselItems(varyAspect: true),
+              ),
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const FullScreenPage(),
                 ),
-              ],
+              ),
+              child: const Text("Open full-screen layout"),
             ),
             const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class FullScreenPage extends StatelessWidget {
+  const FullScreenPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Full-screen layout")),
+      body: M3Carousel(
+        type: CarouselType.fullScreen,
+        onTap: (int tapIndex) => log(tapIndex.toString()),
+        children: carouselItems(),
       ),
     );
   }
@@ -110,90 +150,13 @@ class LabelWidget extends StatelessWidget {
 }
 
 class LayoutWidget extends StatelessWidget {
-  final bool isExpanded;
+  final double height;
   final Widget child;
 
-  const LayoutWidget({super.key, this.isExpanded = false, required this.child});
+  const LayoutWidget({super.key, this.height = 180, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: isExpanded
-          ? EdgeInsets.zero
-          : const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      child: SizedBox(width: double.maxFinite, height: 150, child: child),
-    );
-  }
-}
-
-class ImageElement extends StatelessWidget {
-  final Map listValue;
-
-  const ImageElement({super.key, required this.listValue});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          listValue["image"],
-          fit: BoxFit.cover,
-          width: double.maxFinite,
-          height: double.maxFinite,
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              listValue["title"]!,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.clip,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ContainedLayoutCard extends StatelessWidget {
-  final int index;
-  final String label;
-
-  const ContainedLayoutCard({
-    super.key,
-    required this.index,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.primaries[index % Colors.primaries.length].withValues(
-        alpha: 0.5,
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-          overflow: TextOverflow.clip,
-          softWrap: false,
-        ),
-      ),
-    );
+    return SizedBox(width: double.maxFinite, height: height, child: child);
   }
 }
