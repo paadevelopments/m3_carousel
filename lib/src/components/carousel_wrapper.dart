@@ -221,6 +221,10 @@ class _CarouselWrapperState extends State<CarouselWrapper>
     _syncFocusNodes();
   }
 
+  /// Calls [setState] on behalf of this state's part-file extensions,
+  /// which cannot call the protected member directly.
+  void _rebuild(VoidCallback fn) => setState(fn);
+
   @override
   void dispose() {
     if (widget.controller == null) {
@@ -263,9 +267,7 @@ class _CarouselWrapperState extends State<CarouselWrapper>
                   onRegister: (RenderBox box) => _viewportBox = box,
                   onUnregister: _unregisterViewportBox,
                   child: ClipRect(
-                    clipper: CarouselTrackClipper(
-                      axis: widget.scrollDirection,
-                    ),
+                    clipper: CarouselTrackClipper(axis: widget.scrollDirection),
                     child: _buildCarouselView(carouselChildren),
                   ),
                 ),

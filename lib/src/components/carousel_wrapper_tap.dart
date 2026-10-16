@@ -12,7 +12,7 @@ extension _CarouselWrapperTap on _CarouselWrapperState {
       return;
     }
 
-    setState(() {
+    _rebuild(() {
       _activeIndex = index;
       _snapshotVisibleNeighbors(index, _viewportBox);
     });
@@ -21,7 +21,7 @@ extension _CarouselWrapperTap on _CarouselWrapperState {
     await _pulseController.reverse();
 
     if (mounted) {
-      setState(() {
+      _rebuild(() {
         _activeIndex = null;
         _leftVisibleNeighborIndex = null;
         _rightVisibleNeighborIndex = null;

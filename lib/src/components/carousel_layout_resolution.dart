@@ -85,10 +85,7 @@ extension _CarouselLayoutResolution on _M3CarouselState {
     return trackMain;
   }
 
-  List<double>? _aspectExtentsFor(
-    CarouselTheme theme,
-    EdgeInsets container,
-  ) {
+  List<double>? _aspectExtentsFor(CarouselTheme theme, EdgeInsets container) {
     if (widget.type != CarouselType.uncontainedMultiAspect) {
       return null;
     }

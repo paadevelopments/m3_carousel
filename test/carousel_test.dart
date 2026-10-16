@@ -32,9 +32,7 @@ void main() {
 }
 
 Future<void> _hero(WidgetTester tester) async {
-  await tester.pumpWidget(
-    hostCarousel(M3Carousel(children: carouselItems(6))),
-  );
+  await tester.pumpWidget(hostCarousel(M3Carousel(children: carouselItems(6))));
   await tester.pump();
 
   expect(tester.takeException(), isNull);
@@ -42,8 +40,7 @@ Future<void> _hero(WidgetTester tester) async {
 }
 
 Future<void> _heroAlignments(WidgetTester tester) async {
-  for (final HeroAlignment alignment
-      in HeroAlignment.values) {
+  for (final HeroAlignment alignment in HeroAlignment.values) {
     await tester.pumpWidget(
       hostCarousel(
         M3Carousel(heroAlignment: alignment, children: carouselItems(6)),
@@ -584,17 +581,12 @@ Future<void> _vertical(WidgetTester tester) async {
 }
 
 Future<void> _paddingAndRadius(WidgetTester tester) async {
-  await tester.pumpWidget(
-    hostCarousel(M3Carousel(children: carouselItems(6))),
-  );
+  await tester.pumpWidget(hostCarousel(M3Carousel(children: carouselItems(6))));
   await tester.pump();
 
   final Padding padding = tester.widget<Padding>(
     find
-        .descendant(
-          of: find.byType(M3Carousel),
-          matching: find.byType(Padding),
-        )
+        .descendant(of: find.byType(M3Carousel), matching: find.byType(Padding))
         .first,
   );
   expect(padding.padding, const EdgeInsets.fromLTRB(12, 8, 12, 8));

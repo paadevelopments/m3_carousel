@@ -15,18 +15,6 @@ import 'styles/carousel_theme.dart';
 import 'utils/carousel_layout.dart';
 import 'utils/carousel_scroll_helper.dart';
 
-export 'components/carousel_item.dart';
-export 'components/carousel_show_all.dart';
-export 'components/carousel_slot_scope.dart';
-export 'components/carousel_view.dart';
-export 'components/carousel_wrapper.dart';
-export 'enums/carousel_type.dart';
-export 'models/carousel_change_details.dart';
-export 'models/carousel_scrim.dart';
-export 'styles/carousel_theme.dart';
-export 'utils/carousel_layout.dart';
-export 'utils/carousel_scroll_helper.dart';
-
 part 'components/carousel_navigation.dart';
 part 'components/carousel_layout_resolution.dart';
 part 'components/carousel_header.dart';
@@ -56,13 +44,11 @@ class M3Carousel extends StatefulWidget {
     this.freeScroll,
     this.heroAlignment = HeroAlignment.center,
     this.uncontainedItemExtent = CarouselTheme.defaultUncontainedItemExtent,
-    this.uncontainedShrinkExtent =
-        CarouselTheme.defaultUncontainedShrinkExtent,
+    this.uncontainedShrinkExtent = CarouselTheme.defaultUncontainedShrinkExtent,
     this.childElementBorderRadius,
     this.largeMaxWidth,
     this.itemPadding,
-    this.scrollAnimationDuration =
-        CarouselTheme.defaultScrollAnimationDuration,
+    this.scrollAnimationDuration = CarouselTheme.defaultScrollAnimationDuration,
     this.fixedPulseDelta = 4,
     this.singleSwipeGestureSensitivityRange =
         CarouselTheme.defaultSingleSwipeGestureSensitivityRange,
@@ -178,8 +164,7 @@ class _M3CarouselState extends State<M3Carousel> {
   CarouselController? _ownedController;
   final GlobalKey _trackKey = GlobalKey();
 
-  CarouselController get _controller =>
-      widget.controller ?? _ownedController!;
+  CarouselController get _controller => widget.controller ?? _ownedController!;
 
   bool get _fullScreen => widget.type == CarouselType.fullScreen;
 
@@ -297,8 +282,7 @@ class _M3CarouselState extends State<M3Carousel> {
                     leadingInset: _leadingGap(theme),
                     shrinkExtent:
                         widget.type == CarouselType.uncontained ||
-                            widget.type ==
-                                CarouselType.uncontainedMultiAspect
+                            widget.type == CarouselType.uncontainedMultiAspect
                         ? widget.uncontainedShrinkExtent
                         : 0,
                     scaleItems:

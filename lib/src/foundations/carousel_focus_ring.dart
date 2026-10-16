@@ -86,8 +86,7 @@ class CarouselFocusRing extends StatelessWidget {
 
   Widget _paint(BuildContext context) {
     final ringTheme = CarouselFocusRingTheme.of(context);
-    final bool show =
-        focused && CarouselFocusInteraction.instance.ringsAllowed;
+    final bool show = focused && CarouselFocusInteraction.instance.ringsAllowed;
     final resolvedColor =
         color ?? ringTheme.resolveColor(Theme.of(context).colorScheme);
     final resolvedGap = gap ?? ringTheme.gap;

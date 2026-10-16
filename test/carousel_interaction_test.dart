@@ -50,7 +50,7 @@ Future<void> _controllerSteps(WidgetTester tester) async {
   await tester.pump();
   expect(controller.currentItem, 0);
 
-  final double extent = CarouselTheme.defaultUncontainedItemExtent;
+  const double extent = CarouselTheme.defaultUncontainedItemExtent;
   final Future<void> forward = controller.next();
   await tester.pumpAndSettle();
   await forward;
@@ -175,9 +175,7 @@ Future<void> _edgeItemTapPulse(WidgetTester tester) async {
 }
 
 Future<void> _heroTapPulse(WidgetTester tester) async {
-  await tester.pumpWidget(
-    hostCarousel(M3Carousel(children: carouselItems(6))),
-  );
+  await tester.pumpWidget(hostCarousel(M3Carousel(children: carouselItems(6))));
   await tester.pumpAndSettle();
 
   await tester.tap(find.text('item1'), warnIfMissed: false);
@@ -345,9 +343,7 @@ Future<void> _snapDefaults(WidgetTester tester) async {
     isA<NeverScrollableScrollPhysics>(),
   );
 
-  await tester.pumpWidget(
-    hostCarousel(M3Carousel(children: carouselItems(6))),
-  );
+  await tester.pumpWidget(hostCarousel(M3Carousel(children: carouselItems(6))));
   await tester.pump();
   expect(
     tester.state<ScrollableState>(find.byType(Scrollable)).position.physics,
@@ -365,9 +361,7 @@ Future<void> _snapDefaults(WidgetTester tester) async {
 }
 
 Future<void> _keyboardMove(WidgetTester tester) async {
-  await tester.pumpWidget(
-    hostCarousel(M3Carousel(children: carouselItems(6))),
-  );
+  await tester.pumpWidget(hostCarousel(M3Carousel(children: carouselItems(6))));
   await tester.pump();
 
   await tester.tap(find.text('item0'), warnIfMissed: false);

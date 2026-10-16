@@ -239,13 +239,13 @@ class CarouselTheme extends ThemeExtension<CarouselTheme> {
   /// horizontal edges; the item gap is the leading space at rest.
   EdgeInsets containerPaddingFor(CarouselType type) {
     final double halfGap = itemGap / 2;
-    final double vertical = 8;
+    const double vertical = 8;
     switch (type) {
       case CarouselType.fullScreen:
         return EdgeInsets.zero;
       case CarouselType.uncontained:
       case CarouselType.uncontainedMultiAspect:
-        return EdgeInsets.symmetric(vertical: vertical);
+        return const EdgeInsets.symmetric(vertical: vertical);
       case CarouselType.hero:
       case CarouselType.contained:
         return EdgeInsets.fromLTRB(

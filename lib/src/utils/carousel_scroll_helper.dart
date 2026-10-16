@@ -156,8 +156,7 @@ abstract final class CarouselScrollHelper {
         childrenLength -
             switch (heroAlignment) {
               HeroAlignment.center => 3,
-              HeroAlignment.left ||
-              HeroAlignment.right => 2,
+              HeroAlignment.left || HeroAlignment.right => 2,
             },
       CarouselType.contained => childrenLength - (isExtended ? 4 : 3),
       CarouselType.uncontained ||

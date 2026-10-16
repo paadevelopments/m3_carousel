@@ -35,26 +35,45 @@ Then replace your Material imports:
 import "package:flutter/material.dart";
 
 // After
-import "package:material_ui/material_ui.dart";
+import "package:material_ui/material_ui.dart"
+    hide CarouselController, CarouselScrollPhysics, CarouselView;
 ```
+`m3_carousel` exports its own `CarouselController`, `CarouselScrollPhysics` and `CarouselView`,
+so hide material_ui's versions of those names wherever you import both packages.
 
 ## Usage
 ```dart
 import "package:m3_carousel/m3_carousel.dart";
+import "package:material_ui/material_ui.dart"
+    hide CarouselController, CarouselScrollPhysics, CarouselView;
 
 M3Carousel(
-    type: CarouselType.hero,
-    heroAlignment: HeroAlignment.center,
-    axis: Axis.horizontal,
-    onTap: (int tapIndex) => log(tapIndex.toString()),
-    children: List<Widget>.generate(10, (int index) {
-        return ColoredBox(
-            color: Colors.primaries[index % Colors.primaries.length]
-                .withValues(alpha: 0.8),
-            child: const SizedBox.expand(),
-        );
-    }),
+  type: CarouselType.hero,
+  heroAlignment: HeroAlignment.center,
+  axis: Axis.horizontal,
+  onTap: (int tapIndex) => log(tapIndex.toString()),
+  children: List<CarouselItem>.generate(10, (int index) {
+    return CarouselItem(
+      image: Image.asset("assets/i${index % 6 + 1}.png", fit: BoxFit.cover),
+      title: Text("Item $index"),
+      showScrim: const CarouselScrim.gradient(),
+      onTap: () {},
+    );
+  }),
 ),
+```
+Available layouts: `CarouselType.hero`, `CarouselType.contained`, `CarouselType.uncontained`,
+`CarouselType.uncontainedMultiAspect` and `CarouselType.fullScreen`.
+
+Customize spec defaults by installing a `CarouselTheme` extension:
+```dart
+MaterialApp(
+  theme: ThemeData(
+    extensions: const <ThemeExtension<dynamic>>[
+      CarouselTheme(itemGap: 8, borderRadiusValue: 28),
+    ],
+  ),
+);
 ```
 See [example/lib/main.dart](https://github.com/paadevelopments/m3_carousel/blob/main/example/lib/main.dart)
 for complete examples.

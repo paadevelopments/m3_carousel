@@ -34,7 +34,7 @@ extension _CarouselWrapperFocus on _CarouselWrapperState {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _restRebuildScheduled = false;
       if (mounted) {
-        setState(() {});
+        _rebuild(() {});
       }
     });
   }
@@ -48,7 +48,7 @@ extension _CarouselWrapperFocus on _CarouselWrapperState {
 
   void _onItemStates() {
     if (mounted) {
-      setState(() {});
+      _rebuild(() {});
     }
   }
 
