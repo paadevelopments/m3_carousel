@@ -46,3 +46,7 @@
 
 ## 2.1.4
 * Added package topics and updated documentation assets.
+
+## 2.1.5
+* Updated Flutter version to 3.47.0 and raised environment constraints to Dart `^3.13.0` and Flutter `>=3.47.0`.
+* Added `material_ui` 1.7.0 dependency.
