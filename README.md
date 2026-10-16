@@ -21,6 +21,23 @@ dependencies:
   m3_carousel: ^2.1.5 # requires Dart => ^3.13.0, Flutter >=3.47.0
 ```
 
+## Migrating to `material_ui`
+As of `2.1.5`, this package imports Material from the
+[`material_ui`](https://pub.dev/packages/material_ui) package instead of `package:flutter/material.dart`.
+To migrate your app, add `material_ui` to your pubspec.yaml:
+```yaml
+dependencies:
+  material_ui: ^1.7.0
+```
+Then replace your Material imports:
+```dart
+// Before
+import "package:flutter/material.dart";
+
+// After
+import "package:material_ui/material_ui.dart";
+```
+
 ## Usage
 ```dart
 import "package:m3_carousel/m3_carousel.dart";

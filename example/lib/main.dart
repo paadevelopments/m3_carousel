@@ -1,6 +1,6 @@
 import "dart:developer";
 
-import "package:flutter/material.dart";
+import "package:material_ui/material_ui.dart";
 import "package:m3_carousel/m3_carousel.dart";
 
 void main() {

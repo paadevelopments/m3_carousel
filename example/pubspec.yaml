@@ -12,6 +12,7 @@ dependencies:
   m3_carousel:
     path: ../
   cupertino_icons: ^1.0.2
+  material_ui: ^1.7.0
 
 dev_dependencies:
   flutter_test:

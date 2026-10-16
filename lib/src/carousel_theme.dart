@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import "package:material_ui/material_ui.dart";
 
 /// Default values and helpers for [M3Carousel] / [CarouselView] styling.
 @immutable
